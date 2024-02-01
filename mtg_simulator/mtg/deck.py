@@ -1,11 +1,7 @@
-import pandas as pd
-
-deck_df1 = pd.read_excel('C:/Users/nick.craft/PycharmProjects/mtg_simulator/rand_deck_1.xlsx')
-deck_df2 = pd.read_excel('C:/Users/nick.craft/PycharmProjects/mtg_simulator/rand_deck_2.xlsx')
-
 
 def deck_size(self):
-    return len(self)
+    card_count = max(self.card_slot)
+    return card_count
 
 
 def num_lands(self):

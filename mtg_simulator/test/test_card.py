@@ -1,5 +1,6 @@
 import unittest
-from mtg import deck, main
+from mtg import deck
+import main
 
 
 class TestDeck(unittest.TestCase):
