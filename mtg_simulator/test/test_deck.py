@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from mtg.deck import deck_size, num_lands, num_nonlands
+from mtg.deck import deck_size, num_land
 
 
 class TestDeck(unittest.TestCase):
@@ -13,13 +13,9 @@ class TestDeck(unittest.TestCase):
         result = deck_size(self.cards_in_deck)
         self.assertEqual(result, 99, "deck size test failed")
 
-    def test_num_lands(self):
-        result = num_lands(self.lands_in_deck)
+    def test_num_land(self):
+        result = num_land(self.lands_in_deck)
         self.assertEqual(result, 2, "land count test failed")
-
-    def test_num_nonlands(self):
-        result = num_nonlands(self.lands_in_deck)
-        self.assertEqual(result, 3, "land count test failed")
 
 
 if __name__ == '__main__':
