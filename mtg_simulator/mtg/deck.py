@@ -34,6 +34,25 @@ def num_ramp(self):
     return len(ramp_df)
 
 
+def num_ramp_key(self):
+    filter_df = self[
+        (self.isramp == 1) & (self.iskey == 1)
+    ]
+    count = len(filter_df)
+    return count
+
+
+def num_other(self):
+    other_df = self[
+        (self.iscommander == 0) &
+        (self.island == 0) &
+        (self.isramp == 0) &
+        (self.iskey == 0)
+        ]
+    other_count = len(other_df)
+    return other_count
+
+
 def avg_ramp_value(self):
     ramp_df = self[self.isramp == 1]
     avg = ramp_df['ramp_value'].mean()
