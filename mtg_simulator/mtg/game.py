@@ -60,6 +60,10 @@ class GoldfishGame:
         self.hand -= cards_to_discard
         self.graveyard.update(cards_to_discard)
 
+    def discard_hand(self):
+        self.graveyard.update(self.hand)
+        self.hand -= self.hand
+
     def get_cards_inhand(self):
         return self.hand
 
