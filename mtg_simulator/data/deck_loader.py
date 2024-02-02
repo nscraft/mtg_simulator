@@ -3,10 +3,17 @@ import numpy as np
 import os
 
 
-def load_deck_excel(deck_name):
-    current_dir = os.path.dirname(__file__)
-    excel_file_path = os.path.join(current_dir, deck_name)
-    return pd.read_excel(excel_file_path)
+class DeckExcelMethod:
+    def __init__(self, file_name):
+        self.deck_name = file_name
+
+    def deck_name(self):
+        return str(self.deck_name)
+
+    def load_deck_excel(self):
+        current_dir = os.path.dirname(__file__)
+        excel_file_path = os.path.join(current_dir, self.deck_name)
+        return pd.read_excel(excel_file_path)
 
 
 def write_deck():
