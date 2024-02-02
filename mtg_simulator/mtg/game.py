@@ -46,10 +46,10 @@ class GoldfishGame:
         self.hand = set()
         self.graveyard = set()
 
-    def draw_card(self, num_card):
-        if num_card > len(self.library):
+    def draw_cards(self, num_cards):
+        if num_cards > len(self.library):
             raise ValueError("Not enough cards in the library to draw.")
-        drawn_cards = set(random.sample(self.library, num_card))
+        drawn_cards = set(random.sample(self.library, num_cards))
         self.library -= drawn_cards
         self.hand.update(drawn_cards)
         return drawn_cards
@@ -62,13 +62,4 @@ class GoldfishGame:
 
     def discard_hand(self):
         self.graveyard.update(self.hand)
-        self.hand -= self.hand
-
-    def get_cards_inhand(self):
-        return self.hand
-
-    def get_cards_inlibrary(self):
-        return self.library
-
-    def get_cards_ingrave(self):
-        return self.graveyard
+        self.hand.clear()
