@@ -30,3 +30,10 @@ def pick_card(card_pool, num_card):
         card = random.choice(card_pool)
         picked_cards.add(card)
     return picked_cards
+
+
+def island(deck, cards):
+    lands_inDeck = deck[deck['island'] == 1]
+    island_inHand = lands_inDeck['card_slot'].isin(cards)
+    land_count = island_inHand.sum()
+    return land_count
