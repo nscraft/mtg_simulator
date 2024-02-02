@@ -22,11 +22,11 @@ class UniqueRandomGenerator:
                 return number
 
 
-# Usage
-generator = UniqueRandomGenerator(1, 99)
-
-# Generate some numbers
-for _ in range(2):  # Change the range or use a different loop depending on your needs
-    print(generator.generate_unique())
-
-# This will keep generating unique numbers between 1 and 99 until all possibilities are exhausted.
+def pick_card(card_pool, num_card):
+    if num_card > len(card_pool):
+        raise ValueError("Number of cards to pick exceeds the available cards in the pool.")
+    picked_cards = set()
+    while len(picked_cards) < num_card:
+        card = random.choice(card_pool)
+        picked_cards.add(card)
+    return picked_cards
