@@ -67,7 +67,7 @@ def num_key(self):
 
 def avg_key_value(self):
     key_df = self[self.iskey == 1]
-    avg = key_df['ramp_value'].mean()
+    avg = key_df['key_value'].mean()
     round_avg = round(avg, 2)
     return round_avg
 
@@ -98,3 +98,25 @@ def five_unplayable_opener(self):
     min_unplayable = 5
     probability = P_more_than_k(N=deck_library(self), K=len(filter_deck), n=cards_drawn, k=min_unplayable)
     return probability
+
+
+def deck_reporter(deck):  # will need to add a deck name argument later
+    report = (
+        f"DECKNAME\n"
+        f"Deck Stats:\n"
+        f"{num_commander(deck)} commander(s) with {deck_library(deck)} cards in library.\n"
+        f"Total of {num_land(deck)} lands.\n"
+        f"Average mana cost of non-land cards is {avg_mana_cost(deck)}.\n"
+        f"Total number of ramp cards is {num_ramp(deck)} and total number of key cards is {num_key(deck)}.\n"
+        f"The average ramp value is {avg_ramp_value(deck)} and the average key value is {avg_key_value(deck)}.\n"
+        f"There are {num_other(deck)} other (aka: "
+        f"noncommander, nonland, nonramp, nonkey) cards.\n"
+        f"Probabilities:\n"
+        f"{round(twothree_land_opener(deck) * 100, 1)}% chance of drawing 2-3 land on turn 1?\n"
+        f"{round(four_land_opener(deck) * 100, 1)}% chance of starting with 4 or more lands.\n"
+        f"{round(zero_land_opener(deck) * 100, 1)}% chance of starting with zero land.\n"
+        f"{round(five_unplayable_opener(deck) * 100, 1)}% chance of drawing 5 or more nonland cards that cost more than 1 mana on turn 1?\n"
+        f"Probability of drawing playable ramp by turn 2?\n"
+        f"Probability of drawing playable key card by turn 4?\n"
+    )
+    return report
