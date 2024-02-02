@@ -9,6 +9,10 @@ class DeckMetrics:
         return max(self.deck.card_slot)
 
     def deck_library(self):
+        df = self.deck[self.deck['iscommander'] == 0]
+        return df
+
+    def deck_library_count(self):
         return len(self.deck[self.deck.iscommander == 0])
 
     def num_commander(self):
@@ -63,22 +67,22 @@ class OpeningHandProbabilities:
 
     def zero_land_opener(self):
         hits = 0
-        probability = P_at_exactly_k(N=self.deck_metrics.deck_library(), K=self.deck_metrics.num_land(),
+        probability = P_at_exactly_k(N=self.deck_metrics.deck_library_count(), K=self.deck_metrics.num_land(),
                                      n=self.cards_drawn, k=hits)
         return probability
 
     def fourormore_land_opener(self):
         hits = 4
-        probability = P_more_than_k(N=self.deck_metrics.deck_library(), K=self.deck_metrics.num_land(),
+        probability = P_more_than_k(N=self.deck_metrics.deck_library_count(), K=self.deck_metrics.num_land(),
                                     n=self.cards_drawn, k=hits)
         return probability
 
     def twothree_land_opener(self):
         minhit = 2
         maxhit = 3
-        minprobability = P_at_exactly_k(N=self.deck_metrics.deck_library(), K=self.deck_metrics.num_land(),
+        minprobability = P_at_exactly_k(N=self.deck_metrics.deck_library_count(), K=self.deck_metrics.num_land(),
                                      n=self.cards_drawn, k=minhit)
-        maxprobability = P_at_exactly_k(N=self.deck_metrics.deck_library(), K=self.deck_metrics.num_land(),
+        maxprobability = P_at_exactly_k(N=self.deck_metrics.deck_library_count(), K=self.deck_metrics.num_land(),
                                         n=self.cards_drawn, k=maxhit)
         return minprobability + maxprobability
 
@@ -87,7 +91,7 @@ class OpeningHandProbabilities:
             (self.deck['island'] == 0) & (self.deck['mana_cost'] > 1)
             ]
         min_unplayable = 5
-        probability = P_more_than_k(N=self.deck_metrics.deck_library(), K=len(filter_deck), n=self.cards_drawn,
+        probability = P_more_than_k(N=self.deck_metrics.deck_library_count(), K=len(filter_deck), n=self.cards_drawn,
                                     k=min_unplayable)
         return probability
 
@@ -96,7 +100,7 @@ def deck_reporter(deck_metrics, opening_hand_probs):  # will need to add a deck 
     report = (
         f"DECKNAME\n"
         f"Deck Stats:\n"
-        f"{deck_metrics.num_commander()} commander(s) with {deck_metrics.deck_library()} cards in library.\n"
+        f"{deck_metrics.num_commander()} commander(s) with {deck_metrics.deck_library_count()} cards in library.\n"
         f"Total of {deck_metrics.num_land()} lands.\n"
         f"Average mana cost of non-land cards is {deck_metrics.avg_mana_cost()}.\n"
         f"Total number of ramp cards is {deck_metrics.num_ramp()} and total number of key cards is {deck_metrics.num_key()}.\n"
