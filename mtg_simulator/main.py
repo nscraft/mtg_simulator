@@ -1,6 +1,5 @@
 from data.deck_loader import load_deck_excel, write_deck, write_deck_withpartners
-from mtg.deck import num_commander, deck_library, num_land, avg_mana_cost, num_ramp, avg_ramp_value, deck_size, num_key, \
-    avg_key_value, four_land_opener, zero_land_opener
+from mtg.deck import num_commander, deck_library, num_land, avg_mana_cost, num_ramp, avg_ramp_value, num_key, num_other, avg_key_value, four_land_opener, zero_land_opener
 
 # initialize decks either from Excel files or random gen dfs
 deck_df1 = write_deck()
@@ -18,7 +17,7 @@ def deck_reporter(deck):  # will need to add a deck name argument later
         f"Average mana cost of non-land cards is {avg_mana_cost(deck)}.\n"
         f"Total number of ramp cards is {num_ramp(deck)} and total number of key cards is {num_key(deck)}.\n"
         f"The average ramp value is {avg_ramp_value(deck)} and the average key value is {avg_key_value(deck)}.\n"
-        f"There are {deck_size(deck)-(num_land(deck)+num_ramp(deck)+num_key(deck)+num_commander(deck))} other (aka: "
+        f"There are {num_other(deck)} other (aka: "
         f"noncommander, nonland, nonramp, nonkey) cards.\n"
         f"Probabilities: ~deckname~\n"
         f"Probability of drawing 2-3 land on turn 1?\n"
