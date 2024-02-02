@@ -96,9 +96,9 @@ class OpeningHandProbabilities:
         return probability
 
 
-def deck_reporter(deck_metrics, opening_hand_probs):  # will need to add a deck name argument later
+def deck_reporter(deck_name, deck_metrics, opening_hand_probs):  # will need to add a deck name argument later
     report = (
-        f"DECKNAME\n"
+        f"{deck_name}\n"
         f"Deck Stats:\n"
         f"{deck_metrics.num_commander()} commander(s) with {deck_metrics.deck_library_count()} cards in library.\n"
         f"Total of {deck_metrics.num_land()} lands.\n"
