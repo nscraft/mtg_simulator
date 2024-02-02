@@ -1,5 +1,6 @@
 from mtg.probability_engine import P_more_than_k, P_at_exactly_k
 
+
 class DeckMetrics:
     def __init__(self, deck):
         self.deck = deck
@@ -23,7 +24,7 @@ class DeckMetrics:
         return len(self.deck[self.deck.iskey == 1])
 
     def num_rampkey(self):
-        return len(self.deck[self.deck.isramp == 1 & self.deck.iskey == 1])
+        return len(self.deck[(self.deck.isramp == 1) & (self.deck.iskey == 1)])
 
     def num_other(self):
         other_df = self.deck[
@@ -36,7 +37,7 @@ class DeckMetrics:
         return other_count
 
     def avg_mana_cost(self):
-        avg = self.deck[self.deck.island == 0].mean()
+        avg = self.deck[self.deck.island == 0]['mana_cost'].mean()
         round_avg = round(avg, 2)
         return round_avg
 
@@ -56,7 +57,7 @@ class DeckMetrics:
 class OpeningHandProbabilities:
     cards_drawn = 7
 
-    def __init(self, deck):
+    def __init__(self, deck):
         self.deck = deck
         self.deck_metrics = DeckMetrics(deck)
 
