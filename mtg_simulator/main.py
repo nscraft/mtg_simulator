@@ -31,8 +31,7 @@ goldfish_open = game.draw_card(num_card=7)  # Draw 7 card opener
 print(f"Opening hand: {game.hand}")
 print(f"Cards in Library: {len(game.library)}")
 print(f"Cards in Graveyard: {len(game.graveyard)}")
-selected_cards_to_discard = {25, 50, 75}  # Replace with actual card slots to discard
-#  game.discard_cards(selected_cards_to_discard)
+game.discard_hand()
 print(f"Updated hand: {game.hand}")
 print(f"Cards in Updated Library: {len(game.library)}")
 print(f"Cards in Updated Graveyard: {len(game.graveyard)}")
