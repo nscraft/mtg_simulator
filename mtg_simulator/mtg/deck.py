@@ -37,7 +37,7 @@ def num_ramp(self):
 def num_ramp_key(self):
     filter_df = self[
         (self.isramp == 1) & (self.iskey == 1)
-    ]
+        ]
     count = len(filter_df)
     return count
 
@@ -73,12 +73,28 @@ def avg_key_value(self):
 
 
 def zero_land_opener(self):
-    cards_drawn = 7
+    cards_drawn = 8
     desired_lands = 0
-    return P_at_exactly_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=desired_lands)
+    probability = P_at_exactly_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=desired_lands)
+    return probability
 
 
 def four_land_opener(self):
-    cards_drawn = 7
+    cards_drawn = 8
     min_lands = 4
-    return P_more_than_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=min_lands)
+    probability = P_more_than_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=min_lands)
+    return probability
+
+def twothree_land_opener(self):
+    cards_drawn = 8
+    probability = P_at_exactly_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=2) + P_at_exactly_k(N=deck_library(self), K=num_land(self), n=cards_drawn, k=3)
+    return probability
+
+def five_unplayable_opener(self):
+    cards_drawn = 8
+    filter_deck = self[
+        (self['island'] == 0) & (self['mana_cost'] > 1)
+        ]
+    min_unplayable = 5
+    probability = P_more_than_k(N=deck_library(self), K=len(filter_deck), n=cards_drawn, k=min_unplayable)
+    return probability
