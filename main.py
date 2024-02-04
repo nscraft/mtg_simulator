@@ -26,16 +26,18 @@ print(f"{island(deck1_df, opening_hand1)} Lands in deck1 opening hand")
 
 # Run a goldfish game
 game = GoldfishGame(deck1_df)
-print("\n START GAME: GOLDFISH")
+print("\nSTART GAME: GOLDFISH")
 goldfish_open = game.draw_cards(num_cards=7)  # Draw 7 card opener
 print(f"Opening hand: {game.hand}")
 print(f"Cards in Library: {len(game.library)}")
 print(f"Cards in Graveyard: {len(game.graveyard)}")
 game.discard_hand()
+print("Hnad discarded.")
 print(f"Updated hand: {game.hand}")
 print(f"Cards in Updated Library: {len(game.library)}")
 print(f"Cards in Updated Graveyard: {len(game.graveyard)}")
 goldfish_draw_more = 7
+print("7 more cards drawn.")
 additional_cards_drawn = game.draw_cards(goldfish_draw_more)
 print(f"Updated hand: {game.hand}")
 print(f"Cards in Updated Library: {len(game.library)}")
