@@ -3,6 +3,7 @@
 # when called by main.py, a winner will be returned
 # main.py can call multiple games inorder to simulate a tournament
 import random
+import pandas as pd
 
 
 # this class is deprecated
@@ -24,6 +25,8 @@ class UniqueRandomGenerator:
 
 
 def pick_card(card_pool, num_card):
+    if isinstance(card_pool, pd.Series):
+        card_pool = card_pool.tolist()
     if num_card > len(card_pool):
         raise ValueError("Number of cards to pick exceeds the available cards in the pool.")
     picked_cards = set()
