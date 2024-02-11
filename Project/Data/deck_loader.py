@@ -23,8 +23,11 @@ def write_deck():
     deck_list['mana_cost'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 8, size=len(deck_list)))
     deck_list['isramp'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
     deck_list['ramp_value'] = np.where(deck_list['isramp'] == 0, 0, np.random.randint(1, 5, size=len(deck_list)))
-    deck_list['iskey'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
-    deck_list['key_value'] = np.where(deck_list['iskey'] == 0, 0, np.random.randint(1, 8, size=len(deck_list)))
+    deck_list['isdraw'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
+    deck_list['draw_value'] = np.where(deck_list['isdraw'] == 0, 0, np.random.randint(1, 8, size=len(deck_list)))
+    deck_list['card_score'] = np.where(
+        (deck_list['island'] == 1) | (deck_list['isramp'] == 1) | (deck_list['isdraw'] == 1), 0,
+        deck_list['mana_cost'])
     return deck_list
 
 
