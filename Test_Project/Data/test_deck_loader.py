@@ -30,13 +30,13 @@ class TestWriteDeck(unittest.TestCase):
         commander_count = len(self.df[self.df['iscommander'] == 1])
         land_count = len(self.df[self.df['island'] == 1])
         ramp_count = len(self.df[self.df['isramp'] == 1])
-        key_count = len(self.df[self.df['iskey'] == 1])
-        kind_count = commander_count + land_count + ramp_count + key_count
+        draw_count = len(self.df[self.df['isdraw'] == 1])
+        kind_count = commander_count + land_count + ramp_count + draw_count
         nokind_df = self.df[
             (self.df['iscommander'] == 0) &
             (self.df['island'] == 0) &
             (self.df['isramp'] == 0) &
-            (self.df['iskey'] == 0)
+            (self.df['isdraw'] == 0)
             ]
         nokind_count = len(nokind_df)
         self.assertGreaterEqual(kind_count + nokind_count, 100)
