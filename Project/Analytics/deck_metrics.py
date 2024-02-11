@@ -48,8 +48,8 @@ class DeckMetrics:
         round_avg = round(avg, 2)
         return round_avg
 
-    def avg_key_value(self):
-        key_df = self.deck[self.deck.isdraw == 1]
-        avg = key_df['key_value'].mean()
+    def avg_draw_value(self):
+        draw_df = self.deck[self.deck.isdraw == 1]
+        avg = draw_df['draw_value'].mean()
         round_avg = round(avg, 2)
         return round_avg
