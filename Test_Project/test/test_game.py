@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from mtg.game import pick_card, island, GoldfishGame
+from Project.MTG_elements.game import pick_card, island, GoldfishGame
 
 
 class TestCardPicker(unittest.TestCase):
