@@ -9,6 +9,7 @@ def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
         f"The average ramp value is {deck_metrics.avg_ramp_value()} and the average draw value is {deck_metrics.avg_draw_value()}.\n"
         f"There are {deck_metrics.num_other()} other (aka: "
         f"noncommander, nonland, nonramp, nondraw) cards.\n"
+        f"Average score of cards in deck is {deck_metrics.avg_card_score()}.\n"
         f"Probabilities:\n"
         f"{round(opening_hand_probs.twothree_land_opener() * 100, 1)}% chance of drawing 2-3 land on turn 1?\n"
         f"{round(opening_hand_probs.fourormore_land_opener() * 100, 1)}% chance of starting with 4 or more lands.\n"
