@@ -4,21 +4,24 @@ import random
 
 class Game:
     def __init__(self, deck_df):
-        self.library = deck_df.copy()
-        self.hand = pd.DataFrame()
+        self.library = deck_df[deck_df['iscommander'] == 0].copy()
+        self.hand = deck_df[deck_df['iscommander'] == 1].copy()
         self.graveyard = pd.DataFrame()
         self.turn = 1
         self.total_mana = 0
+        self.play_land_for_turn()
 
     def draw_cards(self, num_cards):
         if num_cards > len(self.library):
             raise ValueError("Not enough cards in the library to draw.")
-        drawn_cards = random.sample(population=self.library, k=num_cards)
-        self.library = [card for card in self.library if card not in drawn_cards]
-        self.hand.update(drawn_cards)
+        drawn_card_slots = random.sample(population=self.library['card_slot'].tolist(), k=num_cards)
+        drawn_cards = self.library[self.library['card_slot'].isin(drawn_card_slots)]
+        self.library = self.library[~self.library['card_slot'].isin(drawn_card_slots)]
+        # Update hand by adding drawn cards
+        self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
         return drawn_cards
 
-    def play_turn(self):
+    def play_land_for_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
                 self.hand = self.draw_cards(7)
@@ -39,8 +42,3 @@ class Game:
             print("Total mana value in graveyard:", self.total_mana)
 
             self.turn += 1
-
-# Example of using the Game class
-# Assume deck_df is your DataFrame containing the deck with columns like 'type', 'mana_cost', etc.
-# game_session = Game(deck_df)
-# game_session.play_turn()
