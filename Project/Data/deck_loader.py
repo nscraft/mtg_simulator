@@ -29,8 +29,3 @@ def write_deck():
         (deck_list['island'] == 1) | (deck_list['isramp'] == 1) | (deck_list['isdraw'] == 1), 0,
         deck_list['mana_cost'])
     return deck_list
-
-
-def write_deck_toexcel(deck_name, deck_df):
-    file_name = f"{deck_name}.xlsx"
-    return deck_df.to_excel(file_name)
