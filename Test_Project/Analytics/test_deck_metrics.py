@@ -13,8 +13,8 @@ class TestDeck(unittest.TestCase):
              'island': [0, 1, 1, 0, 0],
              'isramp': [0, 0, 0, 1, 0],
              'ramp_value': [0, 0, 0, 2, 0],
-             'iskey': [1, 0, 0, 0, 1],
-             'key_value': [1, 1, 0, 0, 7],
+             'isdraw': [1, 0, 0, 0, 1],
+             'draw_value': [1, 1, 0, 0, 7],
              'mana_cost': [3, 0, 0, 1, 3]
              })
 
