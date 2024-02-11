@@ -4,8 +4,8 @@ import random
 
 class Game:
     def __init__(self, deck_df):
-        self.library = deck_df[deck_df['iscommander'] == 0].copy()
-        self.hand = deck_df[deck_df['iscommander'] == 1].copy()
+        self.library = list(deck_df[deck_df['iscommander'] == 0]['card_slot'])
+        self.hand = deck_df[deck_df['iscommander'] == 1]
         self.graveyard = pd.DataFrame()
         self.turn = 1
         self.total_mana = 0
@@ -14,18 +14,17 @@ class Game:
     def draw_cards(self, num_cards):
         if num_cards > len(self.library):
             raise ValueError("Not enough cards in the library to draw.")
-        drawn_card_slots = random.sample(population=self.library['card_slot'].tolist(), k=num_cards)
-        drawn_cards = self.library[self.library['card_slot'].isin(drawn_card_slots)]
-        self.library = self.library[~self.library['card_slot'].isin(drawn_card_slots)]
-        self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
+        drawn_cards = random.sample(population=self.library, k=num_cards)
+        self.library = [card for card in self.library if card not in drawn_cards]
+        self.hand.update(drawn_cards)
         return drawn_cards
 
     def play_land_for_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
-                self.hand = self.draw_cards(7)
+                self.draw_cards(7)
             else:
-                self.hand = pd.concat([self.hand, self.draw_cards(1)], ignore_index=True)
+                self.draw_cards(1)
             print(f"Drawn cards on turn {self.turn}:", self.hand)
 
             # Check for land cards in hand
