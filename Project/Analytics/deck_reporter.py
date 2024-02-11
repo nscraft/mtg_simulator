@@ -1,4 +1,4 @@
-def deck_reporter(deck_name, deck_metrics, opening_hand_probs):  # will need to add a deck name argument later
+def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
     report = (
         f"{deck_name}\n"
         f"Deck Stats:\n"
