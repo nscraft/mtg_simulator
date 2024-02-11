@@ -4,8 +4,8 @@ import random
 
 class Game:
     def __init__(self, deck_df):
-        self.library = deck_df.copy()
-        self.hand = pd.DataFrame()
+        self.library = deck_df['iscommander' == 0]
+        self.hand = deck_df['iscommander' == 1]
         self.graveyard = pd.DataFrame()
         self.turn = 1
         self.total_mana = 0
@@ -18,7 +18,7 @@ class Game:
         self.hand.update(drawn_cards)
         return drawn_cards
 
-    def play_turn(self):
+    def play_land_for_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
                 self.hand = self.draw_cards(7)
@@ -39,8 +39,3 @@ class Game:
             print("Total mana value in graveyard:", self.total_mana)
 
             self.turn += 1
-
-# Example of using the Game class
-# Assume deck_df is your DataFrame containing the deck with columns like 'type', 'mana_cost', etc.
-# game_session = Game(deck_df)
-# game_session.play_turn()
