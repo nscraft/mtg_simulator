@@ -5,5 +5,8 @@ from Project.MTG_elements.game import Game
 deck1_name = "Programed RandDeck"
 deck1_df = write_deck()
 
-# Run a game
-game_instance = Game(deck1_df)
+print(f"deck data frame {deck1_df}")
+
+deck_tolist = list(deck1_df['card_slot'])
+
+print(f"list {deck_tolist}")
