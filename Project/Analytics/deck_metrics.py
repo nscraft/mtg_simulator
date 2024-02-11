@@ -21,18 +21,18 @@ class DeckMetrics:
     def num_ramp(self):
         return len(self.deck[self.deck.isramp == 1])
 
-    def num_key(self):
-        return len(self.deck[self.deck.iskey == 1])
+    def num_draw(self):
+        return len(self.deck[self.deck.isdraw == 1])
 
-    def num_rampkey(self):
-        return len(self.deck[(self.deck.isramp == 1) & (self.deck.iskey == 1)])
+    def num_rampdraw(self):
+        return len(self.deck[(self.deck.isramp == 1) & (self.deck.isdraw == 1)])
 
     def num_other(self):
         other_df = self.deck[
             (self.deck.iscommander == 0) &
             (self.deck.island == 0) &
             (self.deck.isramp == 0) &
-            (self.deck.iskey == 0)
+            (self.deck.isdraw == 0)
             ]
         other_count = len(other_df)
         return other_count
@@ -49,7 +49,7 @@ class DeckMetrics:
         return round_avg
 
     def avg_key_value(self):
-        key_df = self.deck[self.deck.iskey == 1]
+        key_df = self.deck[self.deck.isdraw == 1]
         avg = key_df['key_value'].mean()
         round_avg = round(avg, 2)
         return round_avg
