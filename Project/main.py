@@ -1,6 +1,8 @@
-from data.deck_loader import DeckExcelMethod, write_deck
-from mtg.deck import DeckMetrics, OpeningHandProbabilities, deck_reporter
-from mtg.game import pick_card, island, GoldfishGame
+from Data.deck_loader import DeckExcelMethod, write_deck
+from Analytics.deck_metrics import DeckMetrics
+from Analytics.deck_opener import OpeningHandProbabilities
+from Analytics.deck_reporter import deck_reporter
+from Project.MTG_elements.game import GoldfishGame
 
 # initialize decks either from Excel files or random gen dfs
 deck1_name = "Programed RandDeck"
@@ -18,11 +20,6 @@ opening_hand_probs2 = OpeningHandProbabilities(deck1_df)
 # Print deck stats and probabilities
 print(deck_reporter(deck1_name, deck_metrics1, opening_hand_probs1))
 print(deck_reporter(deck2_name, deck_metrics2, opening_hand_probs2))
-
-# Use pick_card method
-opening_hand1 = pick_card(deck_metrics1.deck_library()['card_slot'], 7)
-print(f"{deck1_name} opening hand: {opening_hand1}")
-print(f"{island(deck1_df, opening_hand1)} Lands in deck1 opening hand")
 
 # Run a goldfish game
 game = GoldfishGame(deck1_df)

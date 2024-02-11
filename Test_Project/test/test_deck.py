@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from mtg.deck import deck_size, num_land, deck_library, avg_mana_cost, num_other, DeckMetrics
+from Project.Analytics.deck_opener import deck_size, num_land, deck_library, avg_mana_cost, num_other
 
 
 class TestDeck(unittest.TestCase):

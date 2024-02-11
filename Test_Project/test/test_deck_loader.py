@@ -1,6 +1,5 @@
 import unittest
-import numpy as np
-from data.deck_loader import write_deck, load_deck_excel, write_deck_withpartners
+from Project.Data.deck_loader import write_deck
 
 
 class TestWriteDeck(unittest.TestCase):
