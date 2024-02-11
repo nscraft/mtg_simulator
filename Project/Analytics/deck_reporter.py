@@ -8,7 +8,7 @@ def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
         f"Total number of ramp cards is {deck_metrics.num_ramp()} and total number of draw cards is {deck_metrics.num_draw()}.\n"
         f"The average ramp value is {deck_metrics.avg_ramp_value()} and the average draw value is {deck_metrics.avg_draw_value()}.\n"
         f"There are {deck_metrics.num_other()} other (aka: "
-        f"noncommander, nonland, nonramp, nonkey) cards.\n"
+        f"noncommander, nonland, nonramp, nondraw) cards.\n"
         f"Probabilities:\n"
         f"{round(opening_hand_probs.twothree_land_opener() * 100, 1)}% chance of drawing 2-3 land on turn 1?\n"
         f"{round(opening_hand_probs.fourormore_land_opener() * 100, 1)}% chance of starting with 4 or more lands.\n"
@@ -16,6 +16,6 @@ def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
         f"{round(opening_hand_probs.five_unplayable_opener() * 100, 1)}% chance of drawing 5 or more nonland cards "
         f"that cost more than 1 mana on turn 1?\n"
         f"Probability of drawing playable ramp by turn 2?\n"
-        f"Probability of drawing playable key card by turn 4?\n"
+        f"Probability of drawing playable draw card by turn 4?\n"
     )
     return report
