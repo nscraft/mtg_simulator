@@ -17,7 +17,6 @@ class Game:
         drawn_card_slots = random.sample(population=self.library['card_slot'].tolist(), k=num_cards)
         drawn_cards = self.library[self.library['card_slot'].isin(drawn_card_slots)]
         self.library = self.library[~self.library['card_slot'].isin(drawn_card_slots)]
-        # Update hand by adding drawn cards
         self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
         return drawn_cards
 
