@@ -53,3 +53,8 @@ class DeckMetrics:
         avg = draw_df['draw_value'].mean()
         round_avg = round(avg, 2)
         return round_avg
+
+    def avg_card_score(self):
+        avg = self.deck['card_score'].mean()
+        round_avg = round(avg, 2)
+        return round_avg
