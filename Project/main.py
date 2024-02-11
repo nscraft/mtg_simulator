@@ -1,8 +1,8 @@
-from Data.deck_loader import DeckExcelMethod, write_deck
-from Analytics.deck_metrics import DeckMetrics
-from Analytics.deck_opener import OpeningHandProbabilities
-from Analytics.deck_reporter import deck_reporter
-from Project.MTG_elements.game import GoldfishGame
+from Project.Data.deck_loader import DeckExcelMethod, write_deck
+from Project.Analytics.deck_metrics import DeckMetrics
+from Project.Analytics.deck_opener import OpeningHandProbabilities
+from Project.Analytics.deck_reporter import deck_reporter
+from Project.MTG_elements.goldfish import GoldfishGame
 
 # initialize decks either from Excel files or random gen dfs
 deck1_name = "Programed RandDeck"

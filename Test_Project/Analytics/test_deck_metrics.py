@@ -1,12 +1,13 @@
 import unittest
 import pandas as pd
-from Project.Analytics.deck_opener import deck_size, num_land, deck_library, avg_mana_cost, num_other
+from Project.Analytics.deck_metrics import DeckMetrics
 
 
 class TestDeck(unittest.TestCase):
 
-    def setUp(self):
-        self.test_deck = pd.DataFrame(
+    @classmethod
+    def setUpClass(cls):
+        cls.test_deck = pd.DataFrame(
             {'card_slot': [1, 2, 3, 4, 100],
              'iscommander': [1, 0, 0, 0, 0],
              'island': [0, 1, 1, 0, 0],
@@ -18,23 +19,28 @@ class TestDeck(unittest.TestCase):
              })
 
     def test_deck_length(self):
-        result = deck_size(self.test_deck)
+        deck_metrics_instance = DeckMetrics(self.test_deck)
+        result = deck_metrics_instance.deck_size()
         self.assertEqual(result, 100, "deck size test failed")
 
     def test_deck_library(self):
-        result = deck_library(self.test_deck)
-        self.assertEqual(result, 4)
+        deck_metrics_instance = DeckMetrics(self.test_deck)
+        result = deck_metrics_instance.deck_library()
+        self.assertEqual(len(result), 4, "deck size failed")
 
     def test_num_land(self):
-        result = num_land(self.test_deck)
+        deck_metrics_instance = DeckMetrics(self.test_deck)
+        result = deck_metrics_instance.num_land()
         self.assertEqual(result, 2, "land count test failed")
 
     def test_avg_mana_cost(self):
-        result = avg_mana_cost(self.test_deck)
+        deck_metrics_instance = DeckMetrics(self.test_deck)
+        result = deck_metrics_instance.avg_mana_cost()
         self.assertEqual(result, 2.33)
 
     def test_num_other(self):
-        result = num_other(self.test_deck)
+        deck_metrics_instance = DeckMetrics(self.test_deck)
+        result = deck_metrics_instance.num_other()
         self.assertEqual(result, 0)
 
 
