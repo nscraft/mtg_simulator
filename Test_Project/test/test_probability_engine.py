@@ -1,6 +1,6 @@
 import unittest
 
-from mtg.probability_engine import hypergeom_pmf, hypergeom_cdf, hypergeom_sf
+from Project.Analytics.probability_engine import hypergeom_pmf, hypergeom_cdf, hypergeom_sf
 
 
 class TestHypergeo(unittest.TestCase):
