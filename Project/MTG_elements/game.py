@@ -1,11 +1,10 @@
 import pandas as pd
-import random
 
 
 class Game:
     def __init__(self, deck_df):
         self.library = deck_df[deck_df['iscommander'] == 0]
-        self.hand = deck_df[deck_df['iscommander'] == 1]
+        self.hand = pd.DataFrame(columns=deck_df.columns)
         self.graveyard = pd.DataFrame(columns=deck_df.columns)
         self.turn = 1
         self.total_mana = 0
