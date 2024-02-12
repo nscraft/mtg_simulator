@@ -11,13 +11,6 @@ class MTGSim:
         self.deck_df = None
         print("~~Welcome to MTG_Sim!~~")
 
-    def print_menu(self):
-        print("\nMenu:")
-        print("1. Select Deck")
-        print("2. Print Report for Deck")
-        print("3. Start Goldfish Game")
-        print("4. Exit")
-
     def select_deck(self):
         self.deck_name = input("Enter deck name:")
         self.deck_df = write_deck()
@@ -26,21 +19,25 @@ class MTGSim:
     def print_report(self):
         if self.deck_df is not None:
             print(deck_reporter(
-                    deck_name=self.deck_name,
-                    deck_metrics=DeckMetrics(self.deck_df),
-                    opening_hand_probs=OpeningHandProbabilities(self.deck_df)))
+                deck_name=self.deck_name,
+                deck_metrics=DeckMetrics(self.deck_df),
+                opening_hand_probs=OpeningHandProbabilities(self.deck_df)))
         else:
             print("Please select a deck first.")
 
     def start_goldfishing(self):
-        if self.deck is not None:
+        if self.deck_df is not None:
             start_goldfish_game(self.deck_df)
         else:
             print("Please select a deck first.")
 
     def main_loop(self):
         while True:
-            self.print_menu()
+            print("\nMenu:")
+            print("1. Select Deck")
+            print("2. Print Report for Deck")
+            print("3. Start Goldfish Game")
+            print("4. Exit")
             choice = input("Enter your choice (1-4):")
 
             if choice == '1':
