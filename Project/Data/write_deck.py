@@ -1,6 +1,6 @@
 from Project.Data import deck_loader
 
-deck_instance = deck_loader.write_deck()
+deck_instance = deck_loader.gen_deck()
 
 
 def write_deck_toexcel(deck_name, deck_df):

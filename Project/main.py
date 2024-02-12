@@ -1,5 +1,5 @@
 from Project.Analytics.deck_metrics import DeckMetrics
-from Project.Data.deck_loader import DeckExcelMethod, write_deck
+from Project.Data.deck_loader import DeckExcelMethod, gen_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
@@ -17,12 +17,16 @@ class MTGSim:
 
             if choice == 'rand':
                 self.deck_name = input("Enter deck name:")
-                self.deck_df = write_deck()
+                self.deck_df = gen_deck()
                 print(f"Deck {self.deck_name} loaded!")
                 break
             if choice == 'load_file':
-                print("Load deck from file option under construction.")
-                pass
+                filename = input("Enter file name including extension:")
+                DeckExcelMethod(filename)
+                self.deck_name = DeckExcelMethod.deck_name
+                self.deck_df = DeckExcelMethod.load_deck_excel
+                print(f"Deck {self.deck_name} loaded!")
+                break
             else:
                 print("Invalid method.")
 

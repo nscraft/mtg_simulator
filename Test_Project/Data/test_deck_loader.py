@@ -1,11 +1,11 @@
 import unittest
-from Project.Data.deck_loader import write_deck
+from Project.Data.deck_loader import gen_deck
 
 
 class TestWriteDeck(unittest.TestCase):
 
     def setUp(self):
-        self.df = write_deck()
+        self.df = gen_deck()
 
     def test_write_deck_not_empty(self):
         result = self.df
