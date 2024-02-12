@@ -5,7 +5,7 @@ class Game:
     def __init__(self, deck_df):
         self.library = deck_df[deck_df['iscommander'] == 0]
         self.hand = pd.DataFrame(columns=deck_df.columns)
-        self.graveyard = pd.DataFrame(columns=deck_df.columns)
+        self.battlefield = pd.DataFrame(columns=deck_df.columns)
         self.turn = 1
         self.total_mana = 0
         self.play_land_for_turn()
@@ -20,6 +20,14 @@ class Game:
         self.library = self.library.iloc[num_cards:]
         self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
 
+    def play_land(self):
+        lands_in_hand = self.hand[self.hand['island'] == 1]
+        if not lands_in_hand.empty:
+            land_to_play = lands_in_hand.iloc[0]
+            self.battlefield = pd.concat([self.battlefield, pd.DataFrame([land_to_play])], ignore_index=True)
+            self.hand = self.hand.drop(land_to_play.card_slot)
+            self.total_mana += land_to_play['mana_value']
+
     def play_land_for_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
@@ -29,14 +37,7 @@ class Game:
                 self.draw_cards(1)
                 print(f"Drew {list(self.hand['card_slot'])} as card for turn {self.turn}")
 
-            lands_in_hand = self.hand[self.hand['island'] == 1]
-            if not lands_in_hand.empty:
-                land_to_play = lands_in_hand.iloc[0]
-                self.graveyard = pd.concat([self.graveyard, pd.DataFrame([land_to_play])], ignore_index=True)
-                self.hand = self.hand.drop(land_to_play.card_slot)
-                self.total_mana += land_to_play['mana_value']
-
-            print("Current graveyard:", list(self.graveyard['card_slot']))
-            print("Total mana value in graveyard:", self.total_mana)
+            print("Cards in play:", list(self.battlefield['card_slot']))
+            print("Total mana value in play:", self.total_mana)
 
             self.turn += 1
