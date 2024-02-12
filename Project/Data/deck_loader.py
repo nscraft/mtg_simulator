@@ -16,7 +16,7 @@ class DeckExcelMethod:
         return pd.read_excel(excel_file_path)
 
 
-def write_deck():
+def gen_deck():
     deck_list = pd.DataFrame({'card_slot': range(1, 101)})
     deck_list['iscommander'] = np.where(deck_list['card_slot'] == 1, 1, 0)
     deck_list['island'] = np.where(deck_list['iscommander'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
