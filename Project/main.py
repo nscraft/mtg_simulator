@@ -1,5 +1,4 @@
 from Project.Data.deck_loader import DeckExcelMethod, write_deck
-from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
@@ -11,14 +10,10 @@ deck2 = DeckExcelMethod('deck_sample.xlsx')
 deck2_name = DeckExcelMethod.deck_name(deck2)
 deck2_df = DeckExcelMethod.load_deck_excel(deck2)
 
-# Initialize DeckMetrics and OpeningHandProbabilities instances for each deck
-deck_metrics1 = DeckMetrics(deck1_df)
-opening_hand_probs1 = OpeningHandProbabilities(deck1_df)
-
 
 def print_menu():
     print("\nMenu:")
-    print("1. Print deck report for deck 1")
+    print("1. Print deck report for deck")
     print("2. Start Goldfish Game")
     print("3. Exit")
 
