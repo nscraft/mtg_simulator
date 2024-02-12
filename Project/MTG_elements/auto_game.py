@@ -1,7 +1,5 @@
 import pandas as pd
 
-from Test_Project.debuger import debug
-
 
 class Game:
     def __init__(self, deck_df):
@@ -11,7 +9,6 @@ class Game:
         self.turn = 1
         self.total_mana = 0
         self.play_turn()
-
 
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
@@ -30,6 +27,15 @@ class Game:
             self.battlefield = pd.concat([self.battlefield, pd.DataFrame([land_to_play])], ignore_index=True)
             self.hand = self.hand[self.hand['card_slot'] != land_to_play['card_slot']]
             self.total_mana += land_to_play['mana_value']
+
+    def cast_spells(self):
+        spells_in_hand = self.hand[self.hand['island'] == 0]
+        if not spells_in_hand.empty:
+            spell_to_play = 1     # define which spells to play
+            self.battlefield = 1  # add cards to batlefield
+            self.hand = 1         # remove card from hand
+            self.total_mana 1     # reduce available mana
+
 
     def play_turn(self):
         while self.turn <= 10:
