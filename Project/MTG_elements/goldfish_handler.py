@@ -18,7 +18,7 @@ class DrawCardHandler(Handler):
     def handle(self, request):
         if request == 'draw_cards':
             try:
-                draw_str = int(input("How many more cards would you like to draw?"))
+                draw_str = int(input("How many cards would you like to draw?"))
             except ValueError:
                 print("Please enter a valid integer.")
                 return
