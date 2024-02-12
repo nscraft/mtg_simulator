@@ -44,7 +44,7 @@ class DeckMetrics:
 
     def avg_ramp_value(self):
         ramp_df = self.deck[self.deck.isramp == 1]
-        avg = ramp_df['ramp_value'].mean()
+        avg = ramp_df['mana_value'].mean()
         round_avg = round(avg, 2)
         return round_avg
 

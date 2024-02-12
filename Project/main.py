@@ -13,13 +13,11 @@ deck2_df = DeckExcelMethod.load_deck_excel(deck2)
 
 # Initialize DeckMetrics and OpeningHandProbabilities instances for each deck
 deck_metrics1 = DeckMetrics(deck1_df)
-deck_metrics2 = DeckMetrics(deck2_df)
 opening_hand_probs1 = OpeningHandProbabilities(deck1_df)
-opening_hand_probs2 = OpeningHandProbabilities(deck1_df)
 
 # Print deck stats and probabilities
 print(deck_reporter(deck1_name, deck_metrics1, opening_hand_probs1))
-print(deck_reporter(deck2_name, deck_metrics2, opening_hand_probs2))
+
 
 # Run a goldfish game
 game = GoldfishGame(deck1_df)
@@ -33,8 +31,12 @@ print("Hand discarded.")
 print(f"Updated hand: {game.hand}")
 print(f"Cards in Updated Library: {len(game.library)}")
 print(f"Cards in Updated Graveyard: {len(game.graveyard)}")
-goldfish_draw_more = 7
-print("7 more cards drawn.")
+try:
+    goldfish_draw_more = int(input("How many more cards would you like to draw?"))
+except ValueError:
+    print("Please enter a valid integer.")
+    goldfish_draw_more = 0
+print(f"{goldfish_draw_more} more cards drawn.")
 additional_cards_drawn = game.draw_cards(goldfish_draw_more)
 print(f"Updated hand: {game.hand}")
 print(f"Cards in Updated Library: {len(game.library)}")
