@@ -29,10 +29,8 @@ class Game:
                 self.draw_cards(1)
                 print(f"Drew {list(self.hand['card_slot'])} as card for turn {self.turn}")
 
-            # Check for land cards in hand
             lands_in_hand = self.hand[self.hand['island'] == 1]
             if not lands_in_hand.empty:
-                # Assuming only one land played per turn
                 land_to_play = lands_in_hand.iloc[0]
                 self.graveyard = pd.concat([self.graveyard, pd.DataFrame([land_to_play])], ignore_index=True)
                 self.hand = self.hand.drop(land_to_play.card_slot)

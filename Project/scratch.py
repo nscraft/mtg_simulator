@@ -5,8 +5,12 @@ from Project.MTG_elements.game import Game
 deck1_name = "Programed RandDeck"
 deck1_df = write_deck()
 
-print(f"deck data frame {deck1_df}")
+print(f"deck data frame = \n {deck1_df}\n")
 
-deck_tolist = list(deck1_df['card_slot'])
+select_row = 3
 
-print(f"list {deck_tolist}")
+select_df = deck1_df['card_slot'] == select_row
+
+filter_df = deck1_df.drop(select_df.index)
+
+print(f"filter df = \n{filter_df}")
