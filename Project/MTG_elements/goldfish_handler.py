@@ -1,7 +1,15 @@
 from Project.MTG_elements.goldfish import GoldfishGame
-from Project.Data.deck_loader import write_deck
 
-game_instance = GoldfishGame(deck_df=write_deck())
+
+def start_goldfish_game(deck_df):
+    game_instance = GoldfishGame(deck_df=deck_df)
+    chain_root = DrawCardHandler(DiscardCardHandler())
+
+    # Start handling game actions
+    chain_root.handle('draw_cards')
+    chain_root.handle('discard_cards')
+
+    return game_instance
 
 
 class Handler:
@@ -50,8 +58,3 @@ class DiscardCardHandler(Handler):
             print("Cards in Graveyard:", game_instance.graveyard)
         else:
             super().handle(request)
-
-
-chain_root = DrawCardHandler(DiscardCardHandler())
-chain_root.handle('draw_cards')
-chain_root.handle('discard_cards')
