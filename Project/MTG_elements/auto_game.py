@@ -29,13 +29,19 @@ class Game:
             self.total_mana += land_to_play['mana_value']
 
     def cast_spells(self):
-        spells_in_hand = self.hand[self.hand['island'] == 0]
-        if not spells_in_hand.empty:
-            spell_to_play = 1     # define which spells to play
-            self.battlefield = 1  # add cards to batlefield
-            self.hand = 1         # remove card from hand
-            self.total_mana 1     # reduce available mana
-
+        spells_to_play = pd.DataFrame()
+        mana_for_turn = self.total_mana
+        self.hand.sort_values(by='mana_cost', inplace=True)
+        for index, card in self.hand.iterrows():
+            if card['mana_cost'] <= self.total_mana:
+                card_df = pd.DataFrame([card])
+                spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
+                mana_for_turn -= card['mana_cost']
+                self.hand = self.hand.drop(index)
+            else:
+                break
+        self.battlefield = pd.concat([self.battlefield, spells_to_play]).reset_index(drop=True)
+        self.hand.reset_index(drop=True)
 
     def play_turn(self):
         while self.turn <= 10:
@@ -48,9 +54,13 @@ class Game:
                 print(f"Turn:", self.turn)
                 print(f"Cards in hand:", list(self.hand['card_slot']))
 
+            print("playing lands...")
             self.play_land()
             print("Cards in play:", list(self.battlefield['card_slot']))
             print("Total mana value in play:", self.total_mana)
             print("Cards in Library:", len(self.library))
+            print("casting spells...")
+            self.cast_spells()
+            print("Cards in play:", list(self.battlefield['card_slot']))
 
             self.turn += 1
