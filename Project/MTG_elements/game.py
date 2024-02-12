@@ -8,7 +8,7 @@ class Game:
         self.battlefield = pd.DataFrame(columns=deck_df.columns)
         self.turn = 1
         self.total_mana = 0
-        self.play_land_for_turn()
+        self.play_turn()
 
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
@@ -28,7 +28,7 @@ class Game:
             self.hand = self.hand.drop(land_to_play.card_slot)
             self.total_mana += land_to_play['mana_value']
 
-    def play_land_for_turn(self):
+    def play_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
                 self.draw_cards(7)
@@ -37,6 +37,7 @@ class Game:
                 self.draw_cards(1)
                 print(f"Drew {list(self.hand['card_slot'])} as card for turn {self.turn}")
 
+            self.play_land()
             print("Cards in play:", list(self.battlefield['card_slot']))
             print("Total mana value in play:", self.total_mana)
 
