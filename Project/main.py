@@ -2,7 +2,7 @@ from Project.Data.deck_loader import DeckExcelMethod, write_deck
 from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
-from Project.MTG_elements.goldfish import GoldfishGame
+from Project.MTG_elements.goldfish_handler import start_goldfish_game
 
 # initialize decks either from Excel files or random gen dfs
 deck1_name = "Programed RandDeck"
@@ -17,3 +17,5 @@ opening_hand_probs1 = OpeningHandProbabilities(deck1_df)
 
 # Print deck stats and probabilities
 print(deck_reporter(deck1_name, deck_metrics1, opening_hand_probs1))
+
+game_instance = start_goldfish_game(deck1_df)
