@@ -28,6 +28,20 @@ class TestGameDrawCards(unittest.TestCase):
         self.assertEqual(len(self.game.hand), 8)
         self.assertEqual(len(self.game.library), 92)
 
+    def test_play_land(self):
+        self.game.hand = pd.DataFrame({
+            'card_slot': [1, 2, 3],
+            'iscommander': [0, 0, 0],
+            'island': [0, 1, 0],
+            'mana_cost': [0, 0, 0],
+            'isramp': [0, 0, 0],
+            'mana_value': [0, 1, 0],
+            'isdraw': [0, 0, 0],
+            'draw_value': [0, 0, 0],
+            'card_score': [0, 0, 0]
+        })
+        self.assertEqual(self.game.battlefield['card_slot'].tolist(), 2)
+
 
 if __name__ == '__main__':
     unittest.main()

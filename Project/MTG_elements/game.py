@@ -10,6 +10,7 @@ class Game:
         self.total_mana = 0
         self.play_turn()
 
+
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
 
@@ -25,7 +26,7 @@ class Game:
         if not lands_in_hand.empty:
             land_to_play = lands_in_hand.iloc[0]
             self.battlefield = pd.concat([self.battlefield, pd.DataFrame([land_to_play])], ignore_index=True)
-            self.hand = self.hand.drop(land_to_play.card_slot)
+            self.hand = self.hand[self.hand['card_slot'] != land_to_play['card_slot']]
             self.total_mana += land_to_play['mana_value']
 
     def play_turn(self):
