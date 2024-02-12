@@ -5,20 +5,21 @@ import random
 class Game:
     def __init__(self, deck_df):
         self.library = deck_df[deck_df['iscommander'] == 0]
-        self.card_list = self.library['card_slot'].tolist()
         self.hand = deck_df[deck_df['iscommander'] == 1]
         self.graveyard = pd.DataFrame(columns=deck_df.columns)
         self.turn = 1
         self.total_mana = 0
         self.play_land_for_turn()
 
+    def shuffle(self):
+        self.library = self.library.sample(frac=1).reset_index(drop=True)
+
     def draw_cards(self, num_cards):
         if num_cards > len(self.library):
             raise ValueError("Not enough cards in the library to draw.")
-        drawn_cards = random.sample(population=self.card_list, k=num_cards)
-        self.library = [card for card in self.library if card not in drawn_cards]
-        self.hand.update(drawn_cards)
-        return drawn_cards
+        drawn_cards = self.library.head(num_cards)
+        self.library = self.library.iloc[num_cards:]
+        self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
 
     def play_land_for_turn(self):
         while self.turn <= 10:
