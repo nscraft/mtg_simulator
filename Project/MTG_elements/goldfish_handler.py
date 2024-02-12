@@ -23,11 +23,11 @@ class DrawCardHandler(Handler):
                 draw_str = int(input("How many more cards would you like to draw?"))
             except ValueError:
                 print("Please enter a valid integer.")
-                draw_str = 0
+                return
             GoldfishGame.draw_cards(game_instance, draw_str)
             print("Cards in Library:", len(game_instance.library))
             print("Cards in Hand:", game_instance.hand)
-            print("Cards in Graveyard:", len(game_instance.graveyard))
+            print("Cards in Graveyard:", game_instance.graveyard)
         else:
             super().handle(request)
 
@@ -36,22 +36,22 @@ class DiscardCardHandler(Handler):
 
     def handle(self, request):
         if request == 'discard_cards':
+            discard_input = input("What card(s) would you like to discard?")
             try:
-                discard_str = int(input("What card(s) would you like to discard?"))
+                discard_list = [int(card_str) for card_str in discard_input.split()]
+                cards_to_discard = set(discard_list)
+                GoldfishGame.discard_cards(game_instance, cards_to_discard)
             except ValueError:
                 print("Please enter a valid integer.")
-                discard_str = 0
-            GoldfishGame.discard_cards(game_instance, discard_str)
-            print("Cards in Library:", game_instance.library())
-            print("Cards in Hand:", game_instance.hand())
-            print("Cards in Graveyard:", game_instance.graveyard())
+                return
+
+            print("Cards in Library:", len(game_instance.library))
+            print("Cards in Hand:", game_instance.hand)
+            print("Cards in Graveyard:", game_instance.graveyard)
         else:
             super().handle(request)
 
 
-# Creating the chain
 chain_root = DrawCardHandler(DiscardCardHandler())
-
-# Example requests
 chain_root.handle('draw_cards')
 chain_root.handle('discard_cards')
