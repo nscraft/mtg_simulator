@@ -1,3 +1,4 @@
+from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Data.deck_loader import DeckExcelMethod, write_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
@@ -24,7 +25,12 @@ def main():
         choice = input("Enter your choice (1-3): ")
 
         if choice == '1':
-            print(deck_reporter(deck1_name, deck_metrics1, opening_hand_probs1))
+            deck_name = input("Enter deck name:")
+            deck_df = deck1_df
+            print(deck_reporter(
+                deck_name=deck_name,
+                deck_metrics=DeckMetrics(deck_df),
+                opening_hand_probs=OpeningHandProbabilities(deck_df)))
         elif choice == '2':
             start_goldfish_game(deck1_df)
         elif choice == '3':
