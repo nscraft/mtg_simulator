@@ -1,5 +1,7 @@
 import pandas as pd
 
+from Test_Project.debuger import debug
+
 
 class Game:
     def __init__(self, deck_df):
@@ -36,10 +38,12 @@ class Game:
                 print(f"Turn {self.turn} opener: {list(self.hand['card_slot'])}")
             else:
                 self.draw_cards(1)
-                print(f"Drew {list(self.hand['card_slot'])} as card for turn {self.turn}")
+                print(f"Turn:", self.turn)
+                print(f"Cards in hand:", list(self.hand['card_slot']))
 
             self.play_land()
             print("Cards in play:", list(self.battlefield['card_slot']))
             print("Total mana value in play:", self.total_mana)
+            print("Cards in Library:", len(self.library))
 
             self.turn += 1
