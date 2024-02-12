@@ -12,9 +12,19 @@ class MTGSim:
         print("~~Welcome to MTG_Sim!~~")
 
     def select_deck(self):
-        self.deck_name = input("Enter deck name:")
-        self.deck_df = write_deck()
-        print(f"Deck {self.deck_name} loaded!")
+        while True:
+            choice = input("Select method: (rand/load_file).")
+
+            if choice == 'rand':
+                self.deck_name = input("Enter deck name:")
+                self.deck_df = write_deck()
+                print(f"Deck {self.deck_name} loaded!")
+                break
+            if choice == 'load_file':
+                print("Load deck from file option under construction.")
+                pass
+            else:
+                print("Invalid method.")
 
     def print_report(self):
         if self.deck_df is not None:
