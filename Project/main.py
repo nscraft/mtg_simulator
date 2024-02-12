@@ -3,6 +3,7 @@ from Project.Data.deck_loader import DeckExcelMethod, gen_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
+from Project.MTG_elements.auto_game import Game
 
 
 class MTGSim:
@@ -45,14 +46,21 @@ class MTGSim:
         else:
             print("Please select a deck first.")
 
+    def start_auto_game(self):
+        if self.deck_df is not None:
+            Game(self.deck_df)
+        else:
+            print("Please select a deck first.")
+
     def main_loop(self):
         while True:
             print("\nMenu:")
             print("1. Select Deck")
             print("2. Print Report for Deck")
             print("3. Start Goldfish Game")
-            print("4. Exit")
-            choice = input("Enter your choice (1-4):")
+            print("4. Start Auto Game")
+            print("5. Exit")
+            choice = input("Enter your choice (1-5):")
 
             if choice == '1':
                 self.select_deck()
@@ -61,6 +69,8 @@ class MTGSim:
             elif choice == '3':
                 self.start_goldfishing()
             elif choice == '4':
+                self.start_auto_game()
+            elif choice == '5':
                 print("Exiting...")
                 break
             else:

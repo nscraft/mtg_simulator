@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from Project.MTG_elements.game import Game
+from Project.MTG_elements.auto_game import Game
 
 
 class TestGameDrawCards(unittest.TestCase):
