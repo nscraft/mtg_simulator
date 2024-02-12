@@ -4,41 +4,58 @@ from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
 
-# initialize decks either from Excel files or random gen dfs
-deck1_name = "Programed RandDeck"
-deck1_df = write_deck()
-deck2 = DeckExcelMethod('deck_sample.xlsx')
-deck2_name = DeckExcelMethod.deck_name(deck2)
-deck2_df = DeckExcelMethod.load_deck_excel(deck2)
 
+class MTGSim:
+    def __init__(self):
+        self.deck_name = None
+        self.deck_df = None
+        print("~~Welcome to MTG_Sim!~~")
 
-def print_menu():
-    print("\nMenu:")
-    print("1. Print deck report for deck")
-    print("2. Start Goldfish Game")
-    print("3. Exit")
+    def print_menu(self):
+        print("\nMenu:")
+        print("1. Select Deck")
+        print("2. Print Report for Deck")
+        print("3. Start Goldfish Game")
+        print("4. Exit")
 
+    def select_deck(self):
+        self.deck_name = input("Enter deck name:")
+        self.deck_df = write_deck()
+        print(f"Deck {self.deck_name} loaded!")
 
-def main():
-    while True:
-        print_menu()
-        choice = input("Enter your choice (1-3): ")
-
-        if choice == '1':
-            deck_name = input("Enter deck name:")
-            deck_df = deck1_df
+    def print_report(self):
+        if self.deck_df is not None:
             print(deck_reporter(
-                deck_name=deck_name,
-                deck_metrics=DeckMetrics(deck_df),
-                opening_hand_probs=OpeningHandProbabilities(deck_df)))
-        elif choice == '2':
-            start_goldfish_game(deck1_df)
-        elif choice == '3':
-            print("Exiting...")
-            break
+                    deck_name=self.deck_name,
+                    deck_metrics=DeckMetrics(self.deck_df),
+                    opening_hand_probs=OpeningHandProbabilities(self.deck_df)))
         else:
-            print("Invalid choice. Please choose again.")
+            print("Please select a deck first.")
+
+    def start_goldfishing(self):
+        if self.deck is not None:
+            start_goldfish_game(self.deck_df)
+        else:
+            print("Please select a deck first.")
+
+    def main_loop(self):
+        while True:
+            self.print_menu()
+            choice = input("Enter your choice (1-4):")
+
+            if choice == '1':
+                self.select_deck()
+            elif choice == '2':
+                self.print_report()
+            elif choice == '3':
+                self.start_goldfishing()
+            elif choice == '4':
+                print("Exiting...")
+                break
+            else:
+                print("Invalid choice. Please choose again.")
 
 
 if __name__ == "__main__":
-    main()
+    mtg_sim = MTGSim()
+    mtg_sim.main_loop()
