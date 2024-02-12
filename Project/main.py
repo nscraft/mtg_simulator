@@ -18,4 +18,4 @@ opening_hand_probs1 = OpeningHandProbabilities(deck1_df)
 # Print deck stats and probabilities
 print(deck_reporter(deck1_name, deck_metrics1, opening_hand_probs1))
 
-game_instance = start_goldfish_game(deck1_df)
+start_goldfish_game(deck1_df)
