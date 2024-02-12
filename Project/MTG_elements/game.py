@@ -34,6 +34,7 @@ class Game:
     def play_turn(self):
         while self.turn <= 10:
             if self.turn == 1:
+                self.shuffle()
                 self.draw_cards(7)
                 print(f"Turn {self.turn} opener: {list(self.hand['card_slot'])}")
             else:
