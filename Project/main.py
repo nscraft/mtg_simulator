@@ -71,7 +71,7 @@ class MTGSim:
             elif choice == '4':
                 self.start_auto_game()
             elif choice == '5':
-                print("Exiting...")
+                print("Goodbye")
                 break
             else:
                 print("Invalid choice. Please choose again.")

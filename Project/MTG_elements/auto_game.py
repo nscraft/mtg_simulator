@@ -33,7 +33,7 @@ class Game:
         mana_for_turn = self.total_mana
         self.hand.sort_values(by='mana_cost', inplace=True)
         for index, card in self.hand.iterrows():
-            if card['mana_cost'] <= self.total_mana:
+            if card['mana_cost'] <= mana_for_turn:
                 card_df = pd.DataFrame([card])
                 spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
                 mana_for_turn -= card['mana_cost']
