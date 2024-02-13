@@ -29,10 +29,11 @@ class Game:
             self.total_mana += land_to_play['mana_value']
 
     def cast_spells(self):
+        spells_in_hand = self.hand[self.hand['island'] == 0].copy()
         spells_to_play = pd.DataFrame()
         mana_for_turn = self.total_mana
-        self.hand.sort_values(by='mana_cost', inplace=True)
-        for index, card in self.hand.iterrows():
+        spells_in_hand.sort_values(by='mana_cost', inplace=True)
+        for index, card in spells_in_hand.iterrows():
             if card['mana_cost'] <= mana_for_turn:
                 card_df = pd.DataFrame([card])
                 spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
@@ -40,8 +41,9 @@ class Game:
                 self.hand = self.hand.drop(index)
             else:
                 break
+
         self.battlefield = pd.concat([self.battlefield, spells_to_play]).reset_index(drop=True)
-        self.hand.reset_index(drop=True)
+        self.hand = self.hand.reset_index(drop=True)
 
     def play_turn(self):
         while self.turn <= 10:
