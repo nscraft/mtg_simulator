@@ -39,6 +39,7 @@ class Game:
                 spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
                 mana_for_turn -= card['mana_cost']
                 self.hand = self.hand.drop(index)
+                self.draw_cards(spells_to_play['draw_value'].sum())
             else:
                 break
 
@@ -51,18 +52,25 @@ class Game:
                 self.shuffle()
                 self.draw_cards(7)
                 print(f"Turn {self.turn} opener: {list(self.hand['card_slot'])}")
+                print("Cards in Library:", len(self.library))
             else:
-                self.draw_cards(1)
                 print(f"Turn:", self.turn)
-                print(f"Cards in hand:", list(self.hand['card_slot']))
+                self.draw_cards(1)
+                print("Drew 1 card for turn.")
+                print("Cards in Library:", len(self.library))
+                print(f"Cards in hand:", len(self.hand['card_slot']), list(self.hand['card_slot']))
 
-            print("playing lands...")
+            print("playing land for turn.")
             self.play_land()
-            print("Cards in play:", list(self.battlefield['card_slot']))
+            print(f"Cards in play: lands {len(self.battlefield[self.battlefield['island'] == 1])}",
+                  list(self.battlefield['card_slot']))
             print("Total mana value in play:", self.total_mana)
-            print("Cards in Library:", len(self.library))
             print("casting spells...")
             self.cast_spells()
-            print("Cards in play:", list(self.battlefield['card_slot']))
+            print(
+                f"Cards in play: ramp {len(self.battlefield[self.battlefield['isramp'] == 1])} draw {len(self.battlefield[self.battlefield['isdraw'] == 1])}",
+                list(self.battlefield['card_slot']))
+            print(f"Cards in hand:", len(self.hand['card_slot']), list(self.hand['card_slot']))
+            print("Total mana value in play:", self.total_mana)
 
             self.turn += 1
