@@ -20,7 +20,7 @@ def gen_deck():
     deck_list = pd.DataFrame({'card_slot': range(1, 101)})
     deck_list['iscommander'] = np.where(deck_list['card_slot'] == 1, 1, 0)
     deck_list['island'] = np.where(deck_list['iscommander'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
-    deck_list['mana_cost'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 8, size=len(deck_list)))
+    deck_list['mana_cost'] = np.where(deck_list['island'] == 1, 0, np.random.randint(1, 8, size=len(deck_list)))
     deck_list['isramp'] = np.where(deck_list['island'] == 1, 0, np.random.randint(0, 2, size=len(deck_list)))
     deck_list['mana_value'] = np.where(
         deck_list['island'] == 1, 1,
