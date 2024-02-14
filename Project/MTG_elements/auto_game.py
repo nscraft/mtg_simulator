@@ -72,5 +72,6 @@ class Game:
                 list(self.battlefield['card_slot']))
             print(f"Cards in hand:", len(self.hand['card_slot']), list(self.hand['card_slot']))
             print("Total mana value in play:", self.total_mana)
+            print("Total Card Score: ", self.battlefield['card_score'].sum())
 
             self.turn += 1
