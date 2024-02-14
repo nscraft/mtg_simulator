@@ -1,8 +1,9 @@
-from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Data.deck_loader import DeckExcelMethod
 from Project.Data.deck_gen import gen_rand_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
+from Project.Analytics.deck_metrics import DeckMetrics
+from Project.Analytics.auto_game_reporter import game_report
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
 from Project.MTG_elements.auto_game import Game
 
@@ -54,6 +55,13 @@ class MTGSim:
     def start_auto_game(self):
         if self.deck_df is not None:
             Game(self.deck_df)
+            choice = input("Print save game records? (Y/N):")
+            if choice == "Y":
+                game_report()
+            elif choice == 'N':
+                pass
+            else:
+                print("Invalid choice.")
         else:
             print("Please select a deck first.")
 

@@ -1,5 +1,5 @@
 import pandas as pd
-from Project.Data.save_game_state import SaveGame
+import Project.Data.game_records
 
 
 class Game:
@@ -9,8 +9,9 @@ class Game:
         self.battlefield = pd.DataFrame(columns=deck_df.columns)
         self.turn = 1
         self.total_mana = 0
-        self.savegame_instance = SaveGame()
+        Project.Data.game_records.reset_save()
         self.play_turn()
+
 
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
@@ -53,29 +54,14 @@ class Game:
             if self.turn == 1:
                 self.shuffle()
                 self.draw_cards(7)
-                print(f"Turn {self.turn} opener: {list(self.hand['card_slot'])}")
-                print("Cards in Library:", len(self.library))
             else:
-                print(f"Turn:", self.turn)
                 self.draw_cards(1)
-                print("Drew 1 card for turn.")
-                print("Cards in Library:", len(self.library))
-                print(f"Cards in hand:", len(self.hand['card_slot']), list(self.hand['card_slot']))
 
-            print("playing land for turn.")
             self.play_land()
-            print(f"Cards in play: lands {len(self.battlefield[self.battlefield['island'] == 1])}",
-                  list(self.battlefield['card_slot']))
-            print("Total mana value in play:", self.total_mana)
-            print("casting spells...")
             self.cast_spells()
-            print(
-                f"Cards in play: ramp {len(self.battlefield[self.battlefield['isramp'] == 1])} draw {len(self.battlefield[self.battlefield['isdraw'] == 1])}",
-                list(self.battlefield['card_slot']))
-            print(f"Cards in hand:", len(self.hand['card_slot']), list(self.hand['card_slot']))
-            print("Total mana value in play:", self.total_mana)
-            print("Total Card Score: ", self.battlefield['card_score'].sum())
-
-            self.savegame_instance.save_state(self.library, self.hand, self.battlefield, self.turn)
-
+            Project.Data.game_records.update_records(
+                game_library=self.library,
+                game_hand=self.hand,
+                game_battlefield=self.battlefield,
+                game_turn=self.turn)
             self.turn += 1
