@@ -12,8 +12,9 @@ class DeckExcelMethod:
 
     def load_deck_excel(self):
         current_dir = os.path.dirname(__file__)
-        excel_file_path = os.path.join(current_dir, self.deck_name)
+        file_type = '.xlsx'
+        excel_file_path = os.path.join(current_dir, f"{self.deck_name}{file_type}")
         if not os.path.exists(excel_file_path):
             self.error_msg = 1
         else:
-            pd.read_excel(excel_file_path)
+            return pd.read_excel(excel_file_path)
