@@ -1,13 +1,19 @@
-import pandas as pd
+import os
+import csv
 
-from Project.Data.deck_loader import DeckExcelMethod
+current_script_directory = os.path.dirname(os.path.abspath(__file__))
+data_directory = os.path.join(os.path.dirname(current_script_directory), 'Project/Data')
+filename = "filename.csv"
+fullpath = os.path.join(data_directory, filename)
+data = [
+    ['Name', 'Age', 'City'],
+    ['Alice', 30, 'New York'],
+    ['Bob', 25, 'Los Angeles'],
+    ['Charlie', 35, 'Chicago']
+]
 
-filename = "deck_sample"
+with open(fullpath, 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerows(data)
 
-deck_name = DeckExcelMethod(filename).get_deck_name()
-
-print(f"Deck Name = {deck_name}")
-deck_df = DeckExcelMethod(filename).load_deck_excel()
-print(deck_df)
-deck_df_forced = pd.read_excel("C:/Users/nick.craft/PycharmProjects/mtg_simulator/Project/Data/deck_sample.xlsx")
-print(deck_df_forced)
+print(f"CSV file has been written to {fullpath}")
