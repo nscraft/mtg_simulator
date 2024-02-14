@@ -10,6 +10,11 @@ class Game:
         self.total_mana = 0
         self.play_turn()
 
+    def save_game_state(self, turn):
+        self.library.to_csv(f"auto_game_state_library_turn_{turn}.csv", index=False)
+        self.hand.to_csv(f"auto_game_state_hand_turn_{turn}.csv", index=False)
+        self.battlefield.to_csv(f"auto_game_state_battlefield_turn_{turn}.csv", index=False)
+
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
 
