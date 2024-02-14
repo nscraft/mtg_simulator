@@ -40,6 +40,14 @@ class TestGame(unittest.TestCase):
         self.game.cast_spells()
         self.assertTrue(len(self.game.hand) < initial_hand_count)
         self.assertTrue(len(self.game.battlefield) > 0)
+        self.assertTrue([2] in self.game.battlefield['card_slot'].values)
+        self.assertTrue([3] in self.game.battlefield['card_slot'].values)
+        self.assertFalse([4] in self.game.battlefield['card_slot'].values)
+        self.assertFalse([2] in self.game.hand['card_slot'].values)
+        self.assertFalse([3] in self.game.hand['card_slot'].values)
+        self.assertTrue([4] in self.game.hand['card_slot'].values)
+        self.assertTrue(self.game.hand.index.is_monotonic_increasing)
+        self.assertTrue(self.game.battlefield.index.is_monotonic_increasing)
 
     def test_play_turn(self):
         self.game.play_turn()
