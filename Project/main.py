@@ -1,5 +1,6 @@
 from Project.Analytics.deck_metrics import DeckMetrics
-from Project.Data.deck_loader import DeckExcelMethod, gen_deck
+from Project.Data.deck_loader import DeckExcelMethod
+from Project.Data.deck_gen import gen_rand_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
@@ -18,7 +19,7 @@ class MTGSim:
 
             if choice == 'rand':
                 self.deck_name = input("Enter deck name:")
-                self.deck_df = gen_deck()
+                self.deck_df = gen_rand_deck()
                 print(f"Deck {self.deck_name} loaded!")
                 break
             if choice == 'load_file':
