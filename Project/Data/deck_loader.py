@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 
 
@@ -7,7 +6,7 @@ class DeckExcelMethod:
     def __init__(self, file_name):
         self.deck_name = file_name
 
-    def deck_name(self):
+    def get_deck_name(self):
         return str(self.deck_name)
 
     def load_deck_excel(self):

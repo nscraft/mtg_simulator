@@ -24,9 +24,8 @@ class MTGSim:
                 break
             if choice == 'load_file':
                 filename = input("Enter file name including extension:")
-                DeckExcelMethod(filename)
-                self.deck_name = DeckExcelMethod.deck_name
-                self.deck_df = DeckExcelMethod.load_deck_excel
+                self.deck_name = DeckExcelMethod(filename).get_deck_name()
+                self.deck_df = DeckExcelMethod(filename).load_deck_excel()
                 print(f"Deck {self.deck_name} loaded!")
                 break
             else:

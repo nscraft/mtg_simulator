@@ -1,46 +1,26 @@
 import unittest
-from Project.Data.deck_loader import gen_deck
+from unittest.mock import patch, mock_open
+import pandas as pd
+from Project.Data.deck_loader import DeckExcelMethod
 
 
-class TestWriteDeck(unittest.TestCase):
-
-    def setUp(self):
-        self.df = gen_deck()
-
-    def test_write_deck_not_empty(self):
-        result = self.df
-        self.assertIsNotNone(result)
-
-    def test_deck_len(self):
-        result = len(self.df)
-        self.assertEqual(result, 100)
-
-    def test_deck_commanders_notThree(self):
-        df = self.df
-        result = len(df[df['iscommander'] == 1])
-        self.assertLessEqual(result, 2)
-        self.assertNotEqual(result, 3)
-
-    def test_lands_cost_zero_mana(self):
-        land_df = self.df[self.df['island'] == 1]
-        result = sum(land_df['mana_cost'])
-        self.assertEqual(result, 0)
-
-    def test_sumOther_isLess(self):
-        commander_count = len(self.df[self.df['iscommander'] == 1])
-        land_count = len(self.df[self.df['island'] == 1])
-        ramp_count = len(self.df[self.df['isramp'] == 1])
-        draw_count = len(self.df[self.df['isdraw'] == 1])
-        kind_count = commander_count + land_count + ramp_count + draw_count
-        nokind_df = self.df[
-            (self.df['iscommander'] == 0) &
-            (self.df['island'] == 0) &
-            (self.df['isramp'] == 0) &
-            (self.df['isdraw'] == 0)
-            ]
-        nokind_count = len(nokind_df)
-        self.assertGreaterEqual(kind_count + nokind_count, 100)
+class TestDeckExcelMethod(unittest.TestCase):
+    @patch('deck_loader.pd.read_excel')
+    @patch('deck_loader.os.path.join')
+    @patch('deck_loader.os.path.dirname')
+    def test_load_deck_excel(self, mock_dirname, mock_join, mock_read_excel):
+        mock_dirname.return_value = '/fake/directory'
+        mock_join.return_value = '/fake/directory/fake_deck.xlsx'
+        mock_df = pd.DataFrame({'column1': [1, 2], 'column2': [3, 4]})
+        mock_read_excel.return_value = mock_df
+        deck_method = DeckExcelMethod('deck_sample.xlsx')
+        result_df = deck_method.load_deck_excel()
+        mock_dirname.assert_called_once_with(__file__)
+        mock_join.assert_called_once_with('/fake/directory', 'fake_deck.xlsx')
+        mock_read_excel.assert_called_once_with('/fake/directory/fake_deck.xlsx')
+        pd.testing.assert_frame_equal(result_df, mock_df)
 
 
 if __name__ == '__main__':
     unittest.main()
+
