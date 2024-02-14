@@ -15,18 +15,21 @@ class MTGSim:
 
     def select_deck(self):
         while True:
-            choice = input("Select method: (rand/load_file).")
-
-            if choice == 'rand':
+            choice = input("1. Random\n2. Load_File\nSelect method:")
+            if choice == '1':
                 self.deck_name = input("Enter deck name:")
                 self.deck_df = gen_rand_deck()
                 print(f"Deck {self.deck_name} loaded!")
                 break
-            if choice == 'load_file':
+            if choice == '2':
                 filename = input("Enter file name including extension:")
-                self.deck_name = DeckExcelMethod(filename).get_deck_name()
-                self.deck_df = DeckExcelMethod(filename).load_deck_excel()
-                print(f"Deck {self.deck_name} loaded!")
+                instance = DeckExcelMethod(filename)
+                self.deck_name = instance.get_deck_name()
+                self.deck_df = instance.load_deck_excel()
+                if instance.error_msg == 1:
+                    print(f"{filename} not found. Deck Not loaded.")
+                else:
+                    print(f"Deck {self.deck_name} loaded!")
                 break
             else:
                 print("Invalid method.")
