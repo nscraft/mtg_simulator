@@ -14,6 +14,7 @@ def run_game(deck_df):
             instance.draw_cards(1)
         instance.play_land()
         instance.cast_spells()
+        instance.draw_cards(instance.spell_draw)
         Project.Data.game_records.update_records(
             game_library=instance.library,
             game_hand=instance.hand,
