@@ -53,13 +53,11 @@ class DiscardCardHandler(Handler):
 def start_goldfish_game(deck_df):
     game_instance = GoldfishGame(deck_df=deck_df)
 
-    # Instantiate handlers with game_instance
     chain_root = DrawCardHandler(
         successor=DiscardCardHandler(game_instance=game_instance),
         game_instance=game_instance
     )
 
-    # Start handling game actions
     chain_root.handle('draw_cards')
     chain_root.handle('discard_cards')
 
