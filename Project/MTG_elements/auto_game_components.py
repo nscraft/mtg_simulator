@@ -7,6 +7,7 @@ class GameComponents:
         self.hand = pd.DataFrame(columns=deck_df.columns)
         self.battlefield = pd.DataFrame(columns=deck_df.columns)
         self.total_mana = 0
+        self.spell_draw = 0
 
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
@@ -37,7 +38,7 @@ class GameComponents:
                 spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
                 mana_for_turn -= card['mana_cost']
                 self.hand = self.hand.drop(index)
-                self.draw_cards(spells_to_play['draw_value'].sum())
+                self.spell_draw = spells_to_play['draw_value'].sum()
             else:
                 break
 
