@@ -37,6 +37,8 @@ class TestGame(unittest.TestCase):
         self.game.cast_spells()
         self.assertTrue(len(self.game.hand) < initial_hand_count)
         self.assertTrue(len(self.game.battlefield) > 0)
+        self.assertTrue(self.game.hand.index.is_monotonic_increasing)
+        self.assertTrue(self.game.battlefield.index.is_monotonic_increasing)
 
 
 if __name__ == '__main__':
