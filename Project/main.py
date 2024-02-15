@@ -6,7 +6,7 @@ from Project.Analytics.deck_reporter import deck_reporter
 from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Analytics.auto_game_reporter import game_report
 from Project.MTG_elements.goldfish_handler import start_goldfish_game
-from Project.MTG_elements.auto_game import Game
+from Project.MTG_elements.auto_game_handler import run_game
 
 
 class MTGSim:
@@ -55,7 +55,7 @@ class MTGSim:
 
     def start_auto_game(self):
         if self.deck_df is not None:
-            Game(self.deck_df)
+            run_game(self.deck_df)
             choice = input("Game finished.\nPrint save game records? (Y/N):")
             if choice == "Y":
                 game_report()
