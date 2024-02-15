@@ -56,7 +56,7 @@ class MTGSim:
     def start_auto_game(self):
         if self.deck_df is not None:
             Game(self.deck_df)
-            choice = input("Print save game records? (Y/N):")
+            choice = input("Game finished.\nPrint save game records? (Y/N):")
             if choice == "Y":
                 game_report()
             elif choice == 'N':
