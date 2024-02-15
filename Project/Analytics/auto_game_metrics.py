@@ -8,13 +8,16 @@ class GameMetrics:
         return self.battlefield["turn"].max()
 
     def final_score(self):
-        return self.battlefield["card_score"][self.battlefield["turn"] == self.max_turn()].sum()
+        final_bf = self.battlefield[[self.battlefield["turn"] == self.max_turn()]]
+        return final_bf["card_score"].sum()
 
     def final_lands_inplay(self):
-        return len(self.battlefield[self.battlefield["island"] == 1][self.battlefield["turn"] == self.max_turn()])
+        final_bf = self.battlefield[[self.battlefield["turn"] == self.max_turn()]]
+        return len(final_bf["island"] == 1)
 
     def final_mana_value(self):
-        return self.battlefield["mana_value"][self.battlefield["turn"] == self.max_turn()].sum()
+        final_bf = self.battlefield[[self.battlefield["turn"] == self.max_turn()]]
+        return final_bf["mana_value"].sum()
 
     def final_card_count_battlefield(self):
         final_bf = self.battlefield[self.battlefield["turn"] == self.max_turn()]
