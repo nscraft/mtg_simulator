@@ -1,5 +1,6 @@
-import Project.Data.game_records
+import pandas as pd
 
 
 def game_report():
-    print(f"Hand Records:\n", Project.Data.game_records.hand_records)
+    records_hand = pd.read_csv("records_hand.csv")
+    print(f"Hand Records:\n", records_hand)

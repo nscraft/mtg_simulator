@@ -1,3 +1,4 @@
+import Project.Data.game_records
 from Project.Data.deck_loader import DeckExcelMethod
 from Project.Data.deck_gen import gen_rand_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
@@ -84,6 +85,7 @@ class MTGSim:
             elif choice == '4':
                 self.start_auto_game()
             elif choice == '5':
+                Project.Data.game_records.destroy_files()
                 print("Goodbye")
                 break
             else:
