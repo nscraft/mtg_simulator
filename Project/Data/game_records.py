@@ -1,20 +1,29 @@
 import pandas as pd
-
-library_records = pd.DataFrame()
-hand_records = pd.DataFrame()
-battlefield_records = pd.DataFrame()
+import os
 
 
 def reset_save():
-    library_records.drop(library_records.index, inplace=True)
-    hand_records.drop(hand_records.index, inplace=True)
-    battlefield_records.drop(battlefield_records.index, inplace=True)
+    records_library = pd.DataFrame()
+    records_library.to_csv("records_library.csv")
+    records_hand = pd.DataFrame()
+    records_hand.to_csv("records_hand.csv")
+    records_battlefield = pd.DataFrame()
+    records_battlefield.to_csv("records_battlefield.csv")
 
 
 def update_records(game_library, game_hand, game_battlefield, game_turn):
+    records_library = pd.read_csv("records_library.csv")
     game_library['turn'] = game_turn
-    pd.concat([library_records, game_library], ignore_index=True)
+    pd.concat([records_library, game_library], ignore_index=True).to_csv("records_library.csv")
+    records_hand = pd.read_csv("records_hand.csv")
     game_hand['turn'] = game_turn
-    pd.concat([hand_records, game_hand], ignore_index=True)
+    pd.concat([records_hand, game_hand], ignore_index=True).to_csv("records_hand.csv")
+    records_battlefield = pd.read_csv("records_battlefield.csv")
     game_battlefield['turn'] = game_turn
-    pd.concat([battlefield_records, game_battlefield], ignore_index=True)
+    pd.concat([records_battlefield, game_battlefield], ignore_index=True).to_csv("records_battlefield.csv")
+
+
+def destroy_files():
+    os.remove("records_library.csv")
+    os.remove("records_hand.csv")
+    os.remove("records_battlefield.csv")

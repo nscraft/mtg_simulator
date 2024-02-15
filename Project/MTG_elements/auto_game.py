@@ -12,7 +12,6 @@ class Game:
         Project.Data.game_records.reset_save()
         self.play_turn()
 
-
     def shuffle(self):
         self.library = self.library.sample(frac=1).reset_index(drop=True)
 
