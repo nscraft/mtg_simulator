@@ -69,7 +69,7 @@ class MTGSim:
     def start_game_multiple(self):
         if self.deck_df is not None:
             print("Running games...")
-            run_game_multiple(self.deck_df)
+            run_game_multiple(self.deck_df, 100)
             choice = input("Games finished.\nPrint game records? (Y/N):")
             if choice == "Y":
                 game_report_multi()
@@ -102,7 +102,7 @@ class MTGSim:
             elif choice == '5':
                 self.start_game_multiple()
             elif choice == '6':
-                Project.Data.game_records.destroy_files()
+                Project.Data.game_records_batch.destroy_files()
                 print("Goodbye")
                 break
             else:
