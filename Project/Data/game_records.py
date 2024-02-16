@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 
 records_library_accumulator = pd.DataFrame()
