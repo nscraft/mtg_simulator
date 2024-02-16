@@ -33,4 +33,4 @@ class GameMetrics:
     def final_score_multi(self):
         final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
         final_bf_score_sums = final_bf.groupby('game')['card_score'].sum().reset_index()
-        return final_bf_score_sums.card_score.mean()
+        return round(final_bf_score_sums.card_score.mean(), 3)
