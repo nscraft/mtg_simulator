@@ -1,6 +1,6 @@
-from Project.Data import deck_loader
+from Project.Data import deck_gen
 
-deck_instance = deck_loader.gen_deck()
+deck_instance = deck_gen.gen_rand_deck()
 
 
 def write_deck_toexcel(deck_name, deck_df):
@@ -8,4 +8,4 @@ def write_deck_toexcel(deck_name, deck_df):
     return deck_df.to_excel(file_name)
 
 
-write_deck_toexcel("rand_deck_1", deck_instance)
+write_deck_toexcel("rand_deck", deck_instance)
