@@ -2,19 +2,16 @@ import os
 
 import pandas as pd
 
-# Initialize empty DataFrames or load them once at the beginning if needed
 records_library_accumulator = pd.DataFrame()
 records_hand_accumulator = pd.DataFrame()
 records_battlefield_accumulator = pd.DataFrame()
 
 
-def reset_save():
-    records_library = pd.DataFrame()
-    records_library.to_csv("records_library.csv", index=False)
-    records_hand = pd.DataFrame()
-    records_hand.to_csv("records_hand.csv", index=False)
-    records_battlefield = pd.DataFrame()
-    records_battlefield.to_csv("records_battlefield.csv", index=False)
+def reset_records_inMemory():
+    global records_library_accumulator, records_hand_accumulator, records_battlefield_accumulator
+    records_library_accumulator = pd.DataFrame()
+    records_hand_accumulator = pd.DataFrame()
+    records_battlefield_accumulator = pd.DataFrame()
 
 
 def update_records(game_library, game_hand, game_battlefield, game_turn, game_num):
@@ -40,6 +37,15 @@ def finalize_records():
 
 
 def destroy_files():
-    os.remove("records_library.csv")
-    os.remove("records_hand.csv")
-    os.remove("records_battlefield.csv")
+    try:
+        os.remove("records_library.csv")
+    except FileNotFoundError:
+        pass
+    try:
+        os.remove("records_hand.csv")
+    except FileNotFoundError:
+        pass
+    try:
+        os.remove("records_battlefield.csv")
+    except FileNotFoundError:
+        pass
