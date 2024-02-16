@@ -1,11 +1,15 @@
 import Project.Data.game_records
-from Project.MTG_elements.auto_game_components import GameComponents
+from Project.MTG_elements.game import GameComponents
 
 
-def run_game(deck_df):
+def run_game(deck_df, game_num):
     instance = GameComponents(deck_df=deck_df)
+    game_num = game_num
     turn = 1
-    Project.Data.game_records.reset_save()
+    if game_num == 1:
+        Project.Data.game_records.reset_save()
+    else:
+        pass
     while turn <= 10:
         if turn == 1:
             instance.shuffle()
@@ -19,5 +23,14 @@ def run_game(deck_df):
             game_library=instance.library,
             game_hand=instance.hand,
             game_battlefield=instance.battlefield,
-            game_turn=turn)
+            game_turn=turn,
+            game_num=game_num
+        )
         turn += 1
+
+
+def run_game_multiple(deck_df):
+    games = 0
+    while games < 100:
+        games += 1
+        run_game(deck_df, game_num=games)

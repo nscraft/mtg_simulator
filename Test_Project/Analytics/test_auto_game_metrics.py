@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from Project.Analytics.auto_game_metrics import GameMetrics
+from Project.Analytics.game_metrics import GameMetrics
 
 
 class TestDeck(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from Project.MTG_elements.auto_game_components import GameComponents
+from Project.MTG_elements.game import GameComponents
 
 
 class TestGame(unittest.TestCase):

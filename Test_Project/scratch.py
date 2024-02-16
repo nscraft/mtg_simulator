@@ -1,12 +1,13 @@
 import pandas as pd
 
-bf = pd.read_csv("records_battlefield.csv")
+# Create the DataFrame
+mydf = pd.DataFrame({
+    "game": [1, 1, 1, 1, 2, 2, 2, 2],
+    "turn": [1, 1, 2, 2, 1, 1, 2, 2],
+    "card_score": [0, 0, 1, 1, 1, 1, 0, 0]
+})
 
+# Filter the DataFrame where turn is equal to 2, then group by 'game' and sum 'card_score'
+result = mydf[mydf['turn'] == 2].groupby('game')['card_score'].sum().reset_index()
 
-def max_turn():
-    return bf["turn"].max()
-
-
-final_bf = bf[bf["turn"] == max_turn()]
-
-print(final_bf)
+print(result.card_score.mean())
