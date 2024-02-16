@@ -4,9 +4,9 @@ from Project.Data.deck_gen import gen_rand_deck
 from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.Analytics.deck_metrics import DeckMetrics
-from Project.Analytics.auto_game_reporter import game_report
-from Project.MTG_elements.goldfish_handler import start_goldfish_game
-from Project.MTG_elements.auto_game_handler import run_game
+from Project.Analytics.game_reporter import game_report, game_report_multi
+from Project.MTG_elements.goldfish_handler import start_goldfish
+from Project.MTG_elements.game_handler import run_game, run_game_multiple
 
 
 class MTGSim:
@@ -49,17 +49,31 @@ class MTGSim:
 
     def start_goldfishing(self):
         if self.deck_df is not None:
-            start_goldfish_game(self.deck_df)
+            start_goldfish(self.deck_df)
         else:
             print("Please select a deck first.")
 
-    def start_auto_game(self):
+    def start_game(self):
         if self.deck_df is not None:
-            run_game(self.deck_df)
-            choice = input("Game finished.\nPrint save game records? (Y/N):")
+            run_game(self.deck_df, game_num=1)
+            choice = input("Game finished.\nPrint game records? (Y/N):")
             if choice == "Y":
                 game_report()
             elif choice == 'N':
+                pass
+            else:
+                print("Invalid choice.")
+        else:
+            print("Please select a deck first.")
+
+    def start_game_multiple(self):
+        if self.deck_df is not None:
+            print("Running games...")
+            run_game_multiple(self.deck_df)
+            choice = input("Games finished.\nPrint game records? (Y/N):")
+            if choice == "Y":
+                game_report_multi()
+            elif choice == "N":
                 pass
             else:
                 print("Invalid choice.")
@@ -71,10 +85,11 @@ class MTGSim:
             print("\nMenu:")
             print("1. Select Deck")
             print("2. Print Report for Deck")
-            print("3. Start Goldfish Game")
-            print("4. Start Auto Game")
-            print("5. Exit")
-            choice = input("Enter your choice (1-5):")
+            print("3. Start Goldfishing")
+            print("4. Run a Game")
+            print("5. Run 100 Games")
+            print("6. Exit")
+            choice = input("Enter your choice (1-6):")
 
             if choice == '1':
                 self.select_deck()
@@ -83,8 +98,10 @@ class MTGSim:
             elif choice == '3':
                 self.start_goldfishing()
             elif choice == '4':
-                self.start_auto_game()
+                self.start_game()
             elif choice == '5':
+                self.start_game_multiple()
+            elif choice == '6':
                 Project.Data.game_records.destroy_files()
                 print("Goodbye")
                 break

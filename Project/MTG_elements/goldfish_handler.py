@@ -50,7 +50,7 @@ class DiscardCardHandler(Handler):
             super().handle(request)
 
 
-def start_goldfish_game(deck_df):
+def start_goldfish(deck_df):
     game_instance = GoldfishGame(deck_df=deck_df)
 
     chain_root = DrawCardHandler(
