@@ -29,7 +29,7 @@ def run_game(deck_df, game_num):
 def run_game_multiple(deck_df, game_num):
     Project.Data.game_records.destroy_files()
     Project.Data.game_records.reset_records_inMemory()
-    games = 0
+    games = 1
     while games <= game_num:
         run_game(deck_df, game_num=games)
         games += 1
