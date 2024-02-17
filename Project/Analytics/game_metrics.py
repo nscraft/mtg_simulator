@@ -16,7 +16,8 @@ class GameMetrics:
 
     def final_lands_inplay(self):
         final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        return len(final_bf['island'] == 1)
+        lands = final_bf[final_bf['island'] == 1]
+        return len(lands)
 
     def final_mana_value(self):
         final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
