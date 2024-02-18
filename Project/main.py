@@ -5,8 +5,8 @@ from Project.Analytics.deck_opener import OpeningHandProbabilities
 from Project.Analytics.deck_reporter import deck_reporter
 from Project.Analytics.deck_metrics import DeckMetrics
 from Project.Analytics.game_reporter import game_report, game_report_multi
-from Project.MTG_elements.goldfish_handler import start_goldfish
-from Project.MTG_elements.game_handler import run_game_multiple
+from Project.Events.goldfish_handler import start_goldfish
+from Project.Events.game_handler import run_game_multiple
 
 
 class MTGSim:

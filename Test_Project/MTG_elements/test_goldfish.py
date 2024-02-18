@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from Project.MTG_elements.goldfish import GoldfishGame
+from Project.Events.goldfish import GoldfishGame
 
 
 class TestGoldfishGame(unittest.TestCase):

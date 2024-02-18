@@ -1,6 +1,3 @@
-import pandas as pd
-
-
 class GameComponents:
     def __init__(self, deck_df):
         self.table = deck_df
