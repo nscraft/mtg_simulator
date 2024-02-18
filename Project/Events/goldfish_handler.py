@@ -1,4 +1,4 @@
-from Project.MTG_elements.goldfish import GoldfishGame
+from Project.Events.goldfish import GoldfishGame
 
 
 class Handler:

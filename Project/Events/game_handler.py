@@ -1,6 +1,6 @@
 import Project.Data.game_records
 import Project.Data.game_records
-from Project.MTG_elements.game import GameComponents
+from Project.Events.game import GameComponents
 
 
 def run_game(deck_df, game_num):

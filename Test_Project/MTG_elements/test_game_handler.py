@@ -1,5 +1,5 @@
 import unittest
-from Project.MTG_elements.game_handler import run_game, run_game_multiple
+from Project.Events.game_handler import run_game, run_game_multiple
 import pandas as pd
 
 
