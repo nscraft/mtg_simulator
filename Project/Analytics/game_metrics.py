@@ -1,37 +1,33 @@
 class GameMetrics:
-    def __init__(self, library_df, hand_df, battlefield_df):
-        self.library = library_df
-        self.hand = hand_df
-        self.battlefield = battlefield_df
+    def __init__(self, game_data):
+        self.records = game_data
+        self.final_bf = self.records[
+            (self.records['turn'] == self.records['turn'].max()) & (self.records['zone'] == 'battlefield')]
+        self.final_hand = self.records[
+            (self.records['turn'] == self.records['turn'].max()) & (self.records['zone'] == 'hand')]
 
     def max_games(self):
-        return self.battlefield['game'].max()
+        return self.records['game'].max()
 
     def max_turn(self):
-        return self.battlefield['turn'].max()
+        return self.records['turn'].max()
 
     def final_score(self):
-        final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        return final_bf['card_score'].sum()
+        game_scores = self.final_bf.groupby('game')['card_score'].sum()
+        return game_scores.mean()
 
     def final_lands_inplay(self):
-        final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        lands = final_bf[final_bf['island'] == 1]
-        return len(lands)
+        final_lands = self.final_bf[self.final_bf['island'] == 1].groupby('game')['card_slot'].count()
+        return final_lands.mean()
 
-    def final_mana_value(self):
-        final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        return final_bf['mana_value'].sum()
+    def final_mana_available(self):
+        mana_value = self.final_bf.groupby('game')['mana_value'].sum()
+        return mana_value.mean()
 
     def final_card_count_battlefield(self):
-        final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        return len(final_bf)
+        cards = self.final_bf.groupby('game').size()
+        return cards.mean()
 
     def final_card_count_hand(self):
-        final_hand = self.hand[self.hand['turn'] == self.max_turn()]
-        return len(final_hand)
-
-    def final_score_multi(self):
-        final_bf = self.battlefield[self.battlefield['turn'] == self.max_turn()]
-        final_bf_score_sums = final_bf.groupby('game')['card_score'].sum().reset_index()
-        return round(final_bf_score_sums.card_score.mean(), 3)
+        cards = self.final_hand.groupby('game').size()
+        return cards.mean()
