@@ -1,12 +1,12 @@
 import Project.Data.game_records
-from Project.Data.deck_loader import DeckExcelMethod
-from Project.Data.deck_gen import gen_rand_deck
-from Project.Analytics.deck_opener import OpeningHandProbabilities
-from Project.Analytics.deck_reporter import deck_reporter
-from Project.Analytics.deck_metrics import DeckMetrics
-from Project.Analytics.game_reporter import game_report, game_report_multi
-from Project.Events.goldfish_handler import start_goldfish
-from Project.Events.game_handler import run_game_multiple
+import Project.Data.deck_loader
+import Project.Data.deck_gen
+import Project.Analytics.deck_opener
+import Project.Analytics.deck_metrics
+import Project.Analytics.deck_reporter
+import Project.Analytics.game_reporter_improved
+import Project.Events.goldfish_handler
+import Project.Events.game_handler_improved
 
 
 class MTGSim:
@@ -22,12 +22,12 @@ class MTGSim:
             choice = input("Select method:")
             if choice == '1':
                 self.deck_name = input("Enter deck name:")
-                self.deck_df = gen_rand_deck()
+                self.deck_df = Project.Data.deck_gen.gen_rand_deck()
                 print(f"Deck {self.deck_name} loaded!")
                 break
             if choice == '2':
                 filename = input("Enter file name:")
-                instance = DeckExcelMethod(filename)
+                instance = Project.Data.deck_loader.DeckExcelMethod(filename)
                 self.deck_name = instance.get_deck_name()
                 self.deck_df = instance.load_deck_excel()
                 if instance.error_msg == 1:
@@ -40,26 +40,26 @@ class MTGSim:
 
     def print_report(self):
         if self.deck_df is not None:
-            print(deck_reporter(
+            print(Project.Analytics.deck_reporter.deck_reporter(
                 deck_name=self.deck_name,
-                deck_metrics=DeckMetrics(self.deck_df),
-                opening_hand_probs=OpeningHandProbabilities(self.deck_df)))
+                deck_metrics=Project.Analytics.deck_metrics.DeckMetrics(self.deck_df),
+                opening_hand_probs=Project.Analytics.deck_opener.OpeningHandProbabilities(self.deck_df)))
         else:
             print("Please select a deck first.")
 
     def start_goldfishing(self):
         if self.deck_df is not None:
-            start_goldfish(self.deck_df)
+            Project.Events.goldfish_handler.start_goldfish(self.deck_df)
         else:
             print("Please select a deck first.")
 
     def start_game(self):
         if self.deck_df is not None:
             print("Running game...")
-            run_game_multiple(self.deck_df, 1)
+            Project.Events.game_handler_improved.run_game(self.deck_df, 1)
             choice = input("Game finished.\nPrint game records? (Y/N):")
             if choice == "Y":
-                game_report()
+                Project.Analytics.game_reporter_improved.game_report()
             elif choice == 'N':
                 pass
             else:
@@ -70,10 +70,10 @@ class MTGSim:
     def start_100_games(self):
         if self.deck_df is not None:
             print("Running games...")
-            run_game_multiple(self.deck_df, 100)
+            Project.Events.game_handler_improved.run_game(self.deck_df, 100)
             choice = input("Games finished.\nPrint game records? (Y/N):")
             if choice == "Y":
-                game_report_multi()
+                Project.Analytics.game_reporter_improved.game_report_multi()
             elif choice == "N":
                 pass
             else:
