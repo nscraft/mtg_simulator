@@ -16,6 +16,7 @@ def run_game(deck_df, game_num):
         instance.set_deck_to_library()
         instance.shuffle()
         instance.draw_cards(7)
+
         while turn_loop < 10:
             turn_loop += 1
             instance.table.loc[:, 'turn'] += 1
@@ -26,4 +27,5 @@ def run_game(deck_df, game_num):
             Project.Data.game_records_improved.update_gamestate_records(
                 instance.table
             )
+
     Project.Data.game_records_improved.save_records()
