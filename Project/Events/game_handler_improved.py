@@ -1,6 +1,5 @@
 import Project.Events.game_improved
 import Project.Data.game_records_improved
-import Project.Data.deck_gen
 
 
 def run_game(deck_df, game_num):
