@@ -4,9 +4,9 @@ import Project.Data.deck_gen
 import Project.Analytics.deck_opener
 import Project.Analytics.deck_metrics
 import Project.Analytics.deck_reporter
-import Project.Analytics.game_reporter_improved
+import Project.Analytics.game_reporter
 import Project.Events.goldfish_handler
-import Project.Events.game_handler_improved
+import Project.Events.game_handler
 
 
 class MTGSim:
@@ -56,10 +56,10 @@ class MTGSim:
     def start_game(self):
         if self.deck_df is not None:
             print("Running game...")
-            Project.Events.game_handler_improved.run_game(self.deck_df, 1)
+            Project.Events.game_handler.run_game(self.deck_df, 1)
             choice = input("Game finished.\nPrint game records? (Y/N):")
             if choice == "Y":
-                Project.Analytics.game_reporter_improved.game_report()
+                Project.Analytics.game_reporter.game_report()
             elif choice == 'N':
                 pass
             else:
@@ -70,10 +70,10 @@ class MTGSim:
     def start_100_games(self):
         if self.deck_df is not None:
             print("Running games...")
-            Project.Events.game_handler_improved.run_game(self.deck_df, 100)
+            Project.Events.game_handler.run_game(self.deck_df, 100)
             choice = input("Games finished.\nPrint game records? (Y/N):")
             if choice == "Y":
-                Project.Analytics.game_reporter_improved.game_report_multi()
+                Project.Analytics.game_reporter.game_report_multi()
             elif choice == "N":
                 pass
             else:

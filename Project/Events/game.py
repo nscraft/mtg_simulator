@@ -1,46 +1,51 @@
-import pandas as pd
-
-
 class GameComponents:
     def __init__(self, deck_df):
-        self.library = deck_df[deck_df['iscommander'] == 0]
-        self.hand = pd.DataFrame(columns=deck_df.columns)
-        self.battlefield = pd.DataFrame(columns=deck_df.columns)
-        self.total_mana = 0
-        self.spell_draw = 0
+        self.table = deck_df
+        self.table['zone'] = 'NA'
+        self.table['game'] = 0
+        self.table['turn'] = 0
+        self.bonus_draw = 0
+
+    def set_commander_to_command_zone(self):
+        self.table.loc[self.table['iscommander'] == 1, 'zone'] = 'command'
+
+    def set_deck_to_library(self):
+        self.table.loc[self.table['iscommander'] == 0, 'zone'] = 'library'
 
     def shuffle(self):
-        self.library = self.library.sample(frac=1).reset_index(drop=True)
+        library_rows = self.table[self.table['zone'] == 'library']
+        shuffled_library_rows = library_rows.sample(frac=1).reset_index(drop=True)
+        library_indices = library_rows.index
+        self.table.loc[library_indices, :] = shuffled_library_rows.values
 
-    def draw_cards(self, num_cards):
-        if num_cards > len(self.library):
-            raise ValueError("Not enough cards in the library to draw.")
-        drawn_cards = self.library.head(num_cards)
-        self.library = self.library.iloc[num_cards:]
-        self.hand = pd.concat([self.hand, drawn_cards], ignore_index=True)
+    def draw_cards(self, draw_num):
+        library_indices = self.table[self.table['zone'] == 'library'].index[:draw_num]
+        if not library_indices.empty:
+            self.table.loc[library_indices, 'zone'] = 'hand'
+        else:
+            pass
 
     def play_land(self):
-        lands_in_hand = self.hand[self.hand['island'] == 1]
+        lands_in_hand = self.table[(self.table['zone'] == 'hand') & (self.table['island'] == 1)]
         if not lands_in_hand.empty:
-            land_to_play = lands_in_hand.iloc[0]
-            self.battlefield = pd.concat([self.battlefield, pd.DataFrame([land_to_play])], ignore_index=True)
-            self.hand = self.hand[self.hand['card_slot'] != land_to_play['card_slot']]
-            self.total_mana += land_to_play['mana_value']
+            land_to_play = lands_in_hand.iloc[0].name
+            self.table.loc[land_to_play, 'zone'] = 'battlefield'
+        else:
+            pass
 
     def cast_spells(self):
-        spells_in_hand = self.hand[self.hand['island'] == 0].copy()
-        spells_to_play = pd.DataFrame()
-        mana_for_turn = self.total_mana
-        spells_in_hand.sort_values(by='mana_cost', inplace=True)
-        for index, card in spells_in_hand.iterrows():
-            if card['mana_cost'] <= mana_for_turn:
-                card_df = pd.DataFrame([card])
-                spells_to_play = pd.concat([spells_to_play, card_df], ignore_index=True)
-                mana_for_turn -= card['mana_cost']
-                self.hand = self.hand.drop(index)
-                self.spell_draw = spells_to_play['draw_value'].sum()
-            else:
-                break
-
-        self.battlefield = pd.concat([self.battlefield, spells_to_play]).reset_index(drop=True)
-        self.hand = self.hand.reset_index(drop=True)
+        mana_for_turn = self.table[self.table['zone'] == 'battlefield'].mana_value.sum()
+        spells_in_hand = self.table[
+            (self.table['zone'] == 'hand') & (self.table['island'] == 0)].sort_values(by='mana_cost')
+        spells_to_play_indices = []
+        self.bonus_draw = 0
+        if not spells_in_hand.empty:
+            for index, card in spells_in_hand.iterrows():
+                if card['mana_cost'] <= mana_for_turn:
+                    mana_for_turn -= card['mana_cost']
+                    spells_to_play_indices.append(index)
+                    self.bonus_draw += card['draw_value']
+                else:
+                    break
+        if spells_to_play_indices:
+            self.table.loc[spells_to_play_indices, 'zone'] = 'battlefield'
