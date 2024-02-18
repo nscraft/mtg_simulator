@@ -1,5 +1,5 @@
 import unittest
-from Project.Events.game_handler import run_game, run_game_multiple
+from Project.Events.game_handler import run_game
 import pandas as pd
 
 
@@ -10,16 +10,17 @@ class TestGame(unittest.TestCase):
             'iscommander': [1, 0, 0, 0, 0, 0],
             'island': [0, 0, 0, 1, 0, 1],
             'mana_cost': [2, 3, 1, 0, 4, 0],
-            'mana_value': [0, 0, 0, 1, 0, 1]
+            'isramp': [0, 0, 1, 0, 0, 0],
+            'mana_value': [0, 0, 0, 1, 0, 1],
+            'isdraw': [0, 0, 1, 0, 0, 0],
+            'draw_value': [0, 0, 2, 0, 0, 0],
+            'card_score': [2, 3, 0, 0, 4, 0],
+
         })
         self.game_num = 3
 
     def test_run_game(self):
         result = run_game(self.mock_deck, self.game_num)
-        return result
-
-    def test_game_multiple(self):
-        result = run_game_multiple(self.mock_deck, self.game_num)
         return result
 
 

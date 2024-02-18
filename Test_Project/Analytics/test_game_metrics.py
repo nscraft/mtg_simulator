@@ -7,7 +7,7 @@ from Project.Analytics.game_metrics import GameMetrics
 class TestDeck(unittest.TestCase):
 
     def setUp(self):
-        lib = pd.DataFrame(
+        gamestate = pd.DataFrame(
             {
                 'card_slot': [],
                 'iscommander': [],
@@ -18,39 +18,11 @@ class TestDeck(unittest.TestCase):
                 'isdraw': [],
                 'draw_value': [],
                 'card_score': [],
+                'zone': [],
                 'game': [],
                 'turn': []
             })
-
-        hand = pd.DataFrame(
-            {
-                'card_slot': [],
-                'iscommander': [],
-                'island': [],
-                'mana_cost': [],
-                'isramp': [],
-                'mana_value': [],
-                'isdraw': [],
-                'draw_value': [],
-                'card_score': [],
-                'game': [],
-                'turn': []
-            })
-        bf = pd.DataFrame(
-            {
-                'card_slot': [],
-                'iscommander': [],
-                'island': [],
-                'mana_cost': [],
-                'isramp': [],
-                'mana_value': [],
-                'isdraw': [],
-                'draw_value': [],
-                'card_score': [],
-                'game': [],
-                'turn': []
-            })
-        self.instance = GameMetrics(lib, hand, bf)
+        self.instance = GameMetrics(game_data=gamestate)
 
     def test_final_score(self):
         result = self.instance.final_score()
