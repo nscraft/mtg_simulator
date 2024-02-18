@@ -1,15 +1,9 @@
-import numpy as np
-import pandas as pd
+import Project.Data.deck_gen
+import Project.MTG_elements.game_handler_improved
 
-df = pd.DataFrame(
-    {
-        'card_slot': [],
-        'iscommander': [],
-        'island': [],
-        'mana_cost': [],
-        'isramp': [],
-        'mana_value': [],
-        'isdraw': [],
-        'draw_value': [],
-        'card_score': [],
-    })
+test_deck = Project.Data.deck_gen.gen_rand_deck()
+
+result = Project.MTG_elements.game_handler_improved.run_game(test_deck)
+
+print(test_deck)
+print(result)
