@@ -36,16 +36,14 @@ class GameComponents:
     def cast_spells(self):
         mana_for_turn = self.table[self.table['zone'] == 'battlefield'].mana_value.sum()
         spells_in_hand = self.table[
-            (self.table['zone'] == 'hand') & (self.table['island'] == 0)].sort_values(by='mana_cost')
+            (self.table['zone'] == 'hand') & (self.table['island'] == 0)].sort_values(by='mana_cost', ascending=False)
         spells_to_play_indices = []
         self.bonus_draw = 0
         if not spells_in_hand.empty:
             for index, card in spells_in_hand.iterrows():
-                if card['mana_cost'] <= mana_for_turn:
+                if card['mana_cost'] <= mana_for_turn or mana_for_turn == 0 and card['mana_cost'] == 0:
                     mana_for_turn -= card['mana_cost']
                     spells_to_play_indices.append(index)
                     self.bonus_draw += card['draw_value']
-                else:
-                    break
         if spells_to_play_indices:
             self.table.loc[spells_to_play_indices, 'zone'] = 'battlefield'
