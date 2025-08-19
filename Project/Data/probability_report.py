@@ -22,7 +22,7 @@ def probability_report(pop_size, successes, sample_size, successes_in_sample, su
     if success_method not in supported_methods:
         raise ValueError(f"Unsupported success method. Supported methods are: {supported_methods}")
 
-    # max turns to simulate
+    # constants
     MAX_TURNS = 12
 
     # variables updated each turn
