@@ -52,7 +52,7 @@ def probability_report(deck_metrics) -> pd.DataFrame:
 
     # variables updated each turn
     TURN_NUMBER = 0
-    DECK_SIZE = deck_metrics.deck_library()  # Total number of cards in the deck BEFORE draw
+    DECK_SIZE = deck_metrics.deck_library_count()  # Total number of cards in the deck BEFORE draw
     NUM_SUCCESS_IN_DECK = deck_metrics.num_land()  # Number of successes in the deck BEFORE draw
     CUMULATIVE_CARDS_DRAWN = 0
     CUMULATIVE_SUCCESSES_DRAWN = 0  # Cumulative successes drawn so far
