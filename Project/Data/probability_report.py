@@ -110,7 +110,7 @@ def probability_report(pop_size, successes, sample_size, successes_in_sample, su
     df = df.sort_values(by='Turn_number').reset_index(drop=True)
     return df
 
-# call function
-data = probability_report(99, 40, 2, 1, 'at_least_k')
-# save data to csv
-data.to_csv('probability_report.csv', index=False)
+# # call function
+# data = probability_report(99, 40, 2, 1, 'at_least_k')
+# # save data to csv
+# data.to_csv('probability_report.csv', index=False)
