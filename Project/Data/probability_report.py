@@ -45,6 +45,9 @@ def probability_report(pop_size, successes, sample_size, successes_in_sample, su
         'chance_of_drawing_more_than_k',
         'chance_of_drawing_at_least_k',
         'chance_of_drawing_less_than_k'
+        'expected_successes_drawn_this_turn',
+        'cumulative_expected_successes_drawn'
+        'cumulative_success_as_percent_of_attempts'  # cumulative_expected_successes_drawn / cumulative_cards_drawn
     ]
     df = pd.DataFrame(columns=columns)
 
@@ -98,7 +101,8 @@ def probability_report(pop_size, successes, sample_size, successes_in_sample, su
             'chance_of_drawing_at_least_k': [P_at_least_k],
             'chance_of_drawing_less_than_k': [P_less_than_k],
             'expected_successes_drawn_this_turn': [expected_successes_drawn_this_turn],
-            'cumulative_expected_successes_drawn': [CUMULATIVE_SUCCESSES_DRAWN]
+            'cumulative_expected_successes_drawn': [CUMULATIVE_SUCCESSES_DRAWN],
+            'cumulative_success_as_percent_of_attempts': [CUMULATIVE_SUCCESSES_DRAWN / CUMULATIVE_CARDS_DRAWN if CUMULATIVE_CARDS_DRAWN > 0 else 0]
         })], ignore_index=True)
 
         # update for next turn
