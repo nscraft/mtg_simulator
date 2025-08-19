@@ -23,7 +23,7 @@ def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
         f"{round(opening_hand_probs.twothree_land_opener() * 100, 1)}% chance of drawing 2-3 land on turn 1?\n"
         f"{round(opening_hand_probs.fourormore_land_opener() * 100, 1)}% chance of starting with 4 or more lands.\n"
         f"{round(opening_hand_probs.zero_land_opener() * 100, 1)}% chance of starting with zero land.\n"
-        f"{round(opening_hand_probs.five_unplayable_opener() * 100, 1)}% chance of drawing 5 or more nonland cards "
-        f"Turn over turn, probability report saved to csv in ./Project/Data/\n"
+        f"{round(opening_hand_probs.five_unplayable_opener() * 100, 1)}% chance of drawing 5 or more nonland cards.\n"
+        f"Turn over turn, land draw probability report saved to csv\n"
     )
     return report
