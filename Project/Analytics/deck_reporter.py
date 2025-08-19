@@ -1,4 +1,13 @@
+from Project.Data.probability_report import probability_report
+
 def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
+    probability_report(
+        pop_size=deck_metrics.deck_library_count,
+        successes=deck_metrics.num_land,
+        sample_size=1,
+        successes_in_sample=1,
+        success_method='at_least_k'
+    )
     report = (
         f"{deck_name}\n"
         f"Deck Stats:\n"
@@ -15,8 +24,6 @@ def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
         f"{round(opening_hand_probs.fourormore_land_opener() * 100, 1)}% chance of starting with 4 or more lands.\n"
         f"{round(opening_hand_probs.zero_land_opener() * 100, 1)}% chance of starting with zero land.\n"
         f"{round(opening_hand_probs.five_unplayable_opener() * 100, 1)}% chance of drawing 5 or more nonland cards "
-        f"that cost more than 1 mana on turn 1?\n"
-        f"Probability of drawing playable ramp by turn 2?\n"
-        f"Probability of drawing playable draw card by turn 4?\n"
+        f"Turn over turn, probability report saved to csv in ./Project/Data/\n"
     )
     return report
