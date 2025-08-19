@@ -1,15 +1,10 @@
 from Project.Data.probability_report import probability_report
 
 def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
-    report_result = probability_report(
-        pop_size=deck_metrics.deck_library_count(),
-        successes=deck_metrics.num_land(),
-        sample_size=1,
-        successes_in_sample=1,
-        success_method='at_least_k'
-    )
+    report_result = probability_report(deck_metrics=deck_metrics)
     # save probability report to csv
     report_result.to_csv('probability_report.csv', index=False)
+
     report = (
         f"{deck_name}\n"
         f"Deck Stats:\n"
