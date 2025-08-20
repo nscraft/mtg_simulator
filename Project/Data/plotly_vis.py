@@ -76,21 +76,19 @@ app.layout = html.Div([
         ], style={
             "display": "flex",
             "flexDirection": "column",
-            "minWidth": "140px",
-            "maxWidth": "160px"
+            "minWidth": "60px",
+            "maxWidth": "80px"
         }),
 
         html.Div([
             html.Label("Num Successes in Deck"),
             dcc.Slider(
                 id="num-successes",
-                min=0, max=99, step=1, value=40,
+                min=0, max=99, step=1, value=38,
                 marks={i: str(i) for i in range(0, 101, 10)},
                 tooltip={"placement": "right", "always_visible": True},
             )
-        ], style={
-            "flex": "1"
-        }),
+        ], style={"maxWidth": "400px", "width": "100%"}),
     ], style={"display": "flex", "alignItems": "center", "marginBottom": "30px"}),
 
     html.H4("Bonus Draw", style={"marginTop": "8px", "marginBottom": "8px"}),
@@ -102,7 +100,7 @@ app.layout = html.Div([
                 id=f"bonus-turn-{i}",
                 min=0, max=10, step=1, value=0,
                 vertical=True,
-                verticalHeight=100,
+                verticalHeight=60,
                 tooltip={"placement": "left", "always_visible": False},
                 marks=None
             ),
@@ -117,7 +115,7 @@ app.layout = html.Div([
     ], style={
         "display": "flex",
         "gap": "12px",
-        "justifyContent": "center",
+        "justifyContent": "left",
         "alignItems": "flex-end",
         "marginBottom": "24px",
         "flexWrap": "nowrap",
@@ -146,7 +144,8 @@ app.layout = html.Div([
 
 # === callback ===
 @app.callback(
-    Output("prob-table", "data"),
+    [Output("prob-table", "data"),
+     Output("prob-table", "style_data_conditional")],
     Input("deck-size", "value"),
     Input("num-successes", "value"),
     [Input(f"bonus-turn-{i}", "value") for i in range(1, 11)]
@@ -154,7 +153,34 @@ app.layout = html.Div([
 def update_table(deck_size, num_successes, *bonus_draws):
     bonus_dict = {f"bonus-turn-{i+1}": val for i, val in enumerate(bonus_draws)}
     df = generate_table_data(deck_size, num_successes, bonus_dict)
-    return df.to_dict("records")
+
+    # Conditional formatting rules
+    style_data_conditional = []
+
+    # Formatting for "successes_drawn_this_turn"
+    max_value = df["successes_drawn_this_turn"].max()
+    if max_value > 0:  # Avoid division by zero
+        for i, row in df.iterrows():
+            value = row["successes_drawn_this_turn"]
+            fill_percentage = int((value / max_value) * 100)
+            style_data_conditional.append({
+                "if": {"row_index": i, "column_id": "successes_drawn_this_turn"},
+                "background": f"linear-gradient(to right, #4CAF50 {fill_percentage}%, transparent {fill_percentage}%)",
+                "color": "black"
+            })
+
+    # Formatting for "chance_of_drawing_at_least_1"
+    for i, row in df.iterrows():
+        value = row["chance_of_drawing_at_least_1"]
+        red = int((1 - value) * 255)
+        green = int(value * 255)
+        style_data_conditional.append({
+            "if": {"row_index": i, "column_id": "chance_of_drawing_at_least_1"},
+            "backgroundColor": f"rgb({red}, {green}, 0)",
+            "color": "black"
+        })
+
+    return df.to_dict("records"), style_data_conditional
 
 
 if __name__ == "__main__":
