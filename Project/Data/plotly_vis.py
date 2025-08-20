@@ -158,9 +158,9 @@ def generate_monte_carlo_table_data(bonus_draws, num_trials: int = 100) -> pd.Da
 # === Dash App ===
 app = dash.Dash(__name__)
 
+# Update the layout to include two tables
 app.layout = html.Div([
-    html.H2("Dynamic Probability Table"),
-    html.H4("Bonus Draw", style={"marginTop": "8px", "marginBottom": "8px"}),
+    html.H2("Dynamic Probability Tables"),
 
     # ── Bonus sliders row (turns 1–10) ─────────────────────────────────────────
     html.Div([
@@ -192,9 +192,49 @@ app.layout = html.Div([
         "paddingBottom": "4px"
     }),
 
-    # ── Table ──────────────────────────────────────────────────────────────────
+    # ── Tables ──────────────────────────────────────────────────────────────────
+    html.H3("Random Game Table"),
     dash_table.DataTable(
-        id="prob-table",
+        id="random-game-table",
+        columns=[{"name": c, "id": c} for c in [
+            'turn_number',
+            'num_cards_in_deck_turn_start',
+            'num_successes_in_deck_turn_start_deck1',
+            'num_successes_in_deck_turn_start_deck2',
+            'num_successes_in_deck_turn_start_deck3',
+            'num_successes_in_deck_turn_start_deck4',
+            'cards_drawn_this_turn',
+            'cumulative_cards_drawn',
+            'chance_of_drawing_at_least_1_deck1',
+            'chance_of_drawing_at_least_1_deck2',
+            'chance_of_drawing_at_least_1_deck3',
+            'chance_of_drawing_at_least_1_deck4',
+            'chance_of_drawing_at_least_1_deck5',
+            'simulated_successes_drawn_this_turn_deck1',
+            'simulated_successes_drawn_this_turn_deck2',
+            'simulated_successes_drawn_this_turn_deck3',
+            'simulated_successes_drawn_this_turn_deck4',
+            'simulated_successes_drawn_this_turn_deck5',
+            'cumulative_successes_drawn_deck1',
+            'cumulative_successes_drawn_deck2',
+            'cumulative_successes_drawn_deck3',
+            'cumulative_successes_drawn_deck4',
+            'cumulative_successes_drawn_deck5',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn_deck1',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn_deck2',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn_deck3',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn_deck4',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn_deck5'
+        ]],
+        style_table={"overflowX": "auto", "maxWidth": "100%"},
+        style_cell={'textAlign': 'center', 'padding': '6px'},
+        style_header={'backgroundColor': '#f4f4f4', 'fontWeight': 'bold'},
+    ),
+
+    # Second table header and table
+    html.H3("Monte Carlo Table"),
+    dash_table.DataTable(
+        id="monte-carlo-table",
         columns=[{"name": c, "id": c} for c in [
             'turn_number',
             'num_cards_in_deck_turn_start',
@@ -233,15 +273,18 @@ app.layout = html.Div([
 
 # === callback ===
 @app.callback(
-    [Output("prob-table", "data"),
-     Output("prob-table", "style_data_conditional")],
+    [
+        Output("random-game-table", "data"),
+        Output("random-game-table", "style_data_conditional"),
+        Output("monte-carlo-table", "data"),
+        Output("monte-carlo-table", "style_data_conditional"),
+    ],
     [Input(f"bonus-turn-{i}", "value") for i in range(1, 11)]
 )
-def update_table(*bonus_draws):
-    bonus_dict = {f"bonus-turn-{i+1}": val for i, val in enumerate(bonus_draws)}
-    df = generate_random_game_table_data(bonus_dict)
+def update_tables_callback(*bonus_draws):
+    return update_tables(*bonus_draws)
 
-    # Conditional formatting rules
+def generate_conditional_formatting(df):
     style_data_conditional = []
 
     # Formatting for "chance_of_drawing_at_least_1..."
@@ -316,8 +359,21 @@ def update_table(*bonus_draws):
                 "color": "black"
             })
 
-    return df.to_dict("records"), style_data_conditional
+    return style_data_conditional
 
+def update_tables(*bonus_draws):
+    bonus_dict = {f"bonus-turn-{i+1}": val for i, val in enumerate(bonus_draws)}
+    random_game_df = generate_random_game_table_data(bonus_dict)
+    monte_carlo_df = generate_monte_carlo_table_data(bonus_dict)
+
+    # Generate conditional formatting for both tables
+    random_game_formatting = generate_conditional_formatting(random_game_df)
+    monte_carlo_formatting = generate_conditional_formatting(monte_carlo_df)
+
+    return (
+        random_game_df.to_dict("records"), random_game_formatting,
+        monte_carlo_df.to_dict("records"), monte_carlo_formatting
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
