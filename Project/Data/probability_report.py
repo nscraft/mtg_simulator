@@ -16,20 +16,20 @@ class ProbabilityReport:
         self.cumulative_hit_bonus = 0
         self.cumulative_successes_drawn = 0
         self.columns = [
-            'Turn_number',
+            'turn_number',
             'num_cards_in_deck_turn_start',
             'num_successes_in_deck_turn_start',
             'cards_drawn_this_turn',
             'cumulative_cards_drawn',
             # 'chance_of_drawing_0',
-            # 'chance_of_drawing_exactly_k',
-            # 'chance_of_drawing_at_most_k',
-            # 'chance_of_drawing_more_than_k',
-            'chance_of_drawing_at_least_k',
-            # 'chance_of_drawing_less_than_k',
+            # 'chance_of_drawing_exactly_1',
+            # 'chance_of_drawing_at_most_1',
+            # 'chance_of_drawing_more_than_1',
+            'chance_of_drawing_at_least_1',
+            # 'chance_of_drawing_less_than_1',
             'successes_drawn_this_turn',
             'cumulative_successes_drawn',
-            'cumulative_success_as_percent_of_attempts',
+            'cumulative_success_as_percent_of_cumulative_cards_drawn',
         ]
         self.dataframe = pd.DataFrame(columns=self.columns)
 
@@ -61,11 +61,11 @@ class ProbabilityReport:
 
             # Calculate total draw probabilities
             P_at_0 = Project.Analytics.probability_engine.P_at_0(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn)
-            P_at_exactly_k = Project.Analytics.probability_engine.P_at_exactly_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
-            P_at_most_k = Project.Analytics.probability_engine.P_at_most_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
-            P_more_than_k = Project.Analytics.probability_engine.P_more_than_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
-            P_at_least_k = Project.Analytics.probability_engine.P_at_least_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
-            P_less_than_k = Project.Analytics.probability_engine.P_less_than_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
+            P_at_exactly_1 = Project.Analytics.probability_engine.P_at_exactly_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
+            P_at_most_1 = Project.Analytics.probability_engine.P_at_most_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
+            P_more_than_1 = Project.Analytics.probability_engine.P_more_than_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
+            P_at_least_1 = Project.Analytics.probability_engine.P_at_least_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
+            P_less_than_1 = Project.Analytics.probability_engine.P_less_than_k(self.deck_size, self.num_success_in_deck, cards_drawn_this_turn, 1)
 
             # Simulate drawing cards
             for _ in range(cards_drawn_this_turn):
@@ -84,20 +84,20 @@ class ProbabilityReport:
 
             # Record row
             new_row = {
-                'Turn_number': [self.turn_number],
+                'turn_number': [self.turn_number],
                 'num_cards_in_deck_turn_start': [turn_start_deck_size],
                 'num_successes_in_deck_turn_start': [turn_start_num_successes],
                 'cards_drawn_this_turn': [cards_drawn_this_turn],
                 'cumulative_cards_drawn': [self.cumulative_cards_drawn],
                 # 'chance_of_drawing_0': [round(P_at_0, 2)],
-                # 'chance_of_drawing_exactly_k': [round(P_at_exactly_k, 2)],
-                # 'chance_of_drawing_at_most_k': [round(P_at_most_k, 2)],
-                # 'chance_of_drawing_more_than_k': [round(P_more_than_k, 2)],
-                'chance_of_drawing_at_least_k': [round(P_at_least_k, 2)],
-                # 'chance_of_drawing_less_than_k': [round(P_less_than_k, 2)],
+                # 'chance_of_drawing_exactly_1': [round(P_at_exactly_1, 2)],
+                # 'chance_of_drawing_at_most_1': [round(P_at_most_1, 2)],
+                # 'chance_of_drawing_more_than_1': [round(P_more_than_1, 2)],
+                'chance_of_drawing_at_least_1': [round(P_at_least_1, 2)],
+                # 'chance_of_drawing_less_than_1': [round(P_less_than_1, 2)],
                 'successes_drawn_this_turn': [successes_drawn_this_turn],
                 'cumulative_successes_drawn': [self.cumulative_successes_drawn],
-                'cumulative_success_as_percent_of_attempts': [
+                'cumulative_success_as_percent_of_cumulative_cards_drawn': [
                     round(self.cumulative_successes_drawn / self.cumulative_cards_drawn if self.cumulative_cards_drawn > 0 else 0, 2)
                 ]
             }
@@ -105,5 +105,5 @@ class ProbabilityReport:
             # Update for next turn
             self.turn_number += 1
 
-        self.dataframe = self.dataframe.sort_values(by='Turn_number').reset_index(drop=True)
+        self.dataframe = self.dataframe.sort_values(by='turn_number').reset_index(drop=True)
         return self.dataframe
