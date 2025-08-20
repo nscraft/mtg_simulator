@@ -6,8 +6,6 @@ import numpy as np
 
 
 # === core probability logic ===
-import numpy as np
-import pandas as pd
 
 def generate_table_data(bonus_draws) -> pd.DataFrame:
     """Simulates drawing the same number of cards from multiple decks,
@@ -75,7 +73,6 @@ def generate_table_data(bonus_draws) -> pd.DataFrame:
         rows.append(row)
 
     return pd.DataFrame(rows)
-
 
 
 # === Dash App ===
