@@ -61,35 +61,71 @@ app = dash.Dash(__name__)
 app.layout = html.Div([
     html.H2("Dynamic Probability Table"),
 
+    # ── Controls row ────────────────────────────────────────────────────────────
     html.Div([
-        html.Label("Deck Size"),
-        dcc.Input(id="deck-size", type="number", value=99, min=1, step=1),
+        html.Div([
+            html.Label("Deck Size"),
+            dcc.Input(
+                id="deck-size",
+                type="number",
+                value=99,
+                min=1,
+                step=1,
+                style={"width": "100%"}
+            ),
+        ], style={
+            "display": "flex",
+            "flexDirection": "column",
+            "minWidth": "140px",
+            "maxWidth": "160px"
+        }),
 
-        html.Label("Num Successes in Deck"),
-        dcc.Slider(
-            id="num-successes",
-            min=0, max=99, step=1, value=40,
-            marks={i: str(i) for i in range(0, 101, 10)},
-            tooltip={"placement": "right", "always_visible": True}
-        ),
-    ], style={"width": "70%", "margin": "20px"}),
+        html.Div([
+            html.Label("Num Successes in Deck"),
+            dcc.Slider(
+                id="num-successes",
+                min=0, max=99, step=1, value=40,
+                marks={i: str(i) for i in range(0, 101, 10)},
+                tooltip={"placement": "right", "always_visible": True},
+            )
+        ], style={
+            "flex": "1"
+        }),
+    ], style={"display": "flex", "alignItems": "center", "marginBottom": "30px"}),
 
-    html.H4("Bonus Draw"),
+    html.H4("Bonus Draw", style={"marginTop": "8px", "marginBottom": "8px"}),
 
-    html.Div(
-        [
+    # ── Bonus sliders row (turns 1–10) ─────────────────────────────────────────
+    html.Div([
+        html.Div([
             dcc.Slider(
                 id=f"bonus-turn-{i}",
                 min=0, max=10, step=1, value=0,
                 vertical=True,
-                tooltip={"placement": "left", "always_visible": True}
-            )
-            for i in range(1, 11)
-        ],
-        style={"display": "flex", "justifyContent": "space-around",
-               "alignItems": "flex-end", "height": "200px", "marginBottom": "30px"}
-    ),
+                verticalHeight=100,
+                tooltip={"placement": "left", "always_visible": False},
+                marks=None
+            ),
+            html.Div(f"T{i}", style={"marginTop": "6px", "textAlign": "center"})
+        ], style={
+            "display": "flex",
+            "flexDirection": "column",
+            "alignItems": "center",
+            "width": "40px"
+        })
+        for i in range(1, 11)
+    ], style={
+        "display": "flex",
+        "gap": "12px",
+        "justifyContent": "center",
+        "alignItems": "flex-end",
+        "marginBottom": "24px",
+        "flexWrap": "nowrap",
+        "overflowX": "auto",  # horizontal scroll if screen is narrow
+        "paddingBottom": "4px"
+    }),
 
+    # ── Table ──────────────────────────────────────────────────────────────────
     dash_table.DataTable(
         id="prob-table",
         columns=[{"name": c, "id": c} for c in [
@@ -102,12 +138,11 @@ app.layout = html.Div([
             'successes_drawn_this_turn',
             'cumulative_successes_drawn',
             'cumulative_success_as_percent_of_cumulative_cards_drawn']],
-        style_table={'overflowX': 'auto'},
-        style_cell={'textAlign': 'center', 'padding': '5px'},
+        style_table={"overflowX": "auto", "maxWidth": "100%"},
+        style_cell={'textAlign': 'center', 'padding': '6px'},
         style_header={'backgroundColor': '#f4f4f4', 'fontWeight': 'bold'},
     )
 ])
-
 
 # === callback ===
 @app.callback(
