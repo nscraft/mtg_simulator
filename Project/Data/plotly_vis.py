@@ -152,6 +152,10 @@ def generate_monte_carlo_table_data(bonus_draws, num_trials: int = 100) -> pd.Da
     # Average across trials, grouped by turn_number
     df_avg = df_all.groupby("turn_number").mean(numeric_only=True).reset_index()
 
+    # Format float values to 2 decimal places
+    float_cols = df_avg.select_dtypes(include=['float']).columns
+    df_avg[float_cols] = df_avg[float_cols].round(2)
+
     return df_avg
 
 
