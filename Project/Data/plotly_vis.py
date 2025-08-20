@@ -6,125 +6,76 @@ import numpy as np
 
 
 # === core probability logic ===
+import numpy as np
+import pandas as pd
+
 def generate_table_data(bonus_draws) -> pd.DataFrame:
-    """Simulates drawing the same number of cards from 5 decks, each with a different number of successes over 10 turns."""
+    """Simulates drawing the same number of cards from multiple decks,
+    each with a different number of successes, over 10 turns."""
 
     deck_size = 99  # Default deck size
-    num_success_in_deck1 = 32
-    num_success_in_deck2 = 34
-    num_success_in_deck3 = 36
-    num_success_in_deck4 = 38
-    num_success_in_deck5 = 40
+    num_successes = [32, 34, 36, 38, 40]   # successes for each deck
+    num_decks = len(num_successes)
+
     rows = []
     cumulative_cards_drawn = 0
-    cumulative_successes_drawn_deck1 = 0
-    cumulative_successes_drawn_deck2 = 0
-    cumulative_successes_drawn_deck3 = 0
-    cumulative_successes_drawn_deck4 = 0
-    cumulative_successes_drawn_deck5 = 0
+    cumulative_successes = [0] * num_decks  # track per-deck totals
 
     for turn_number in range(0, 11):  # 11 rows
         turn_start_deck_size = deck_size
-        turn_start_num_successes_deck1 = num_success_in_deck1
-        turn_start_num_successes_deck2 = num_success_in_deck2
-        turn_start_num_successes_deck3 = num_success_in_deck3
-        turn_start_num_successes_deck4 = num_success_in_deck4
-        turn_start_num_successes_deck5 = num_success_in_deck5
-        successes_drawn_this_turn_deck1 = 0
-        successes_drawn_this_turn_deck2 = 0
-        successes_drawn_this_turn_deck3 = 0
-        successes_drawn_this_turn_deck4 = 0
-        successes_drawn_this_turn_deck5 = 0
+        turn_start_successes = num_successes.copy()
+        successes_this_turn = [0] * num_decks
 
         # cards drawn this turn
         if turn_number == 0:
             cards_drawn_this_turn = 7
         else:
-            # 1 plus slider value for bonus draws
             cards_drawn_this_turn = 1 + bonus_draws.get(f"bonus-turn-{turn_number}", 0)
 
-        # probability of drawing at least 1 success this turn
-        p_at_least_1_deck1 = P_at_least_k(N=deck_size, K=num_success_in_deck1, n=cards_drawn_this_turn, k=1)
-        p_at_least_1_deck2 = P_at_least_k(N=deck_size, K=num_success_in_deck2, n=cards_drawn_this_turn, k=1)
-        p_at_least_1_deck3 = P_at_least_k(N=deck_size, K=num_success_in_deck3, n=cards_drawn_this_turn, k=1)
-        p_at_least_1_deck4 = P_at_least_k(N=deck_size, K=num_success_in_deck4, n=cards_drawn_this_turn, k=1)
-        p_at_least_1_deck5 = P_at_least_k(N=deck_size, K=num_success_in_deck5, n=cards_drawn_this_turn, k=1)
+        # probability of at least 1 success this turn per deck
+        p_at_least_1 = [
+            P_at_least_k(N=deck_size, K=num_successes[i], n=cards_drawn_this_turn, k=1)
+            for i in range(num_decks)
+        ]
 
-        # Simulate drawing cards
+        # simulate draws
         for _ in range(cards_drawn_this_turn):
-            probability1 = P_at_least_k(N=deck_size, K=num_success_in_deck1, n=1, k=1)
-            probability2 = P_at_least_k(N=deck_size, K=num_success_in_deck2, n=1, k=1)
-            probability3 = P_at_least_k(N=deck_size, K=num_success_in_deck3, n=1, k=1)
-            probability4 = P_at_least_k(N=deck_size, K=num_success_in_deck4, n=1, k=1)
-            probability5 = P_at_least_k(N=deck_size, K=num_success_in_deck5, n=1, k=1)
-            hit_result1 = np.random.binomial(1, probability1)
-            hit_result2 = np.random.binomial(1, probability2)
-            hit_result3 = np.random.binomial(1, probability3)
-            hit_result4 = np.random.binomial(1, probability4)
-            hit_result5 = np.random.binomial(1, probability5)
+            for i in range(num_decks):
+                p = P_at_least_k(N=deck_size, K=num_successes[i], n=1, k=1)
+                hit = np.random.binomial(1, p)
+                if hit:
+                    num_successes[i] -= 1
+                    successes_this_turn[i] += 1
             deck_size -= 1
             cumulative_cards_drawn += 1
-            if hit_result1 == 1:
-                num_success_in_deck1 -= 1
-                successes_drawn_this_turn_deck1 += 1
-            if hit_result2 == 1:
-                num_success_in_deck2 -= 1
-                successes_drawn_this_turn_deck2 += 1
-            if hit_result3 == 1:
-                num_success_in_deck3 -= 1
-                successes_drawn_this_turn_deck3 += 1
-            if hit_result4 == 1:
-                num_success_in_deck4 -= 1
-                successes_drawn_this_turn_deck4 += 1
-            if hit_result5 == 1:
-                num_success_in_deck5 -= 1
-                successes_drawn_this_turn_deck5 += 1
 
-        # Update cumulative trackers
-        cumulative_successes_drawn_deck1 += successes_drawn_this_turn_deck1
-        cumulative_successes_drawn_deck2 += successes_drawn_this_turn_deck2
-        cumulative_successes_drawn_deck3 += successes_drawn_this_turn_deck3
-        cumulative_successes_drawn_deck4 += successes_drawn_this_turn_deck4
-        cumulative_successes_drawn_deck5 += successes_drawn_this_turn_deck5
+        # update cumulative successes
+        for i in range(num_decks):
+            cumulative_successes[i] += successes_this_turn[i]
 
-        rows.append({
+        # build row dictionary
+        row = {
             "turn_number": turn_number,
             "num_cards_in_deck_turn_start": turn_start_deck_size,
-            "num_successes_in_deck_turn_start_deck1": turn_start_num_successes_deck1,
-            "num_successes_in_deck_turn_start_deck2": turn_start_num_successes_deck2,
-            "num_successes_in_deck_turn_start_deck3": turn_start_num_successes_deck3,
-            "num_successes_in_deck_turn_start_deck4": turn_start_num_successes_deck4,
-            "num_successes_in_deck_turn_start_deck5": turn_start_num_successes_deck5,
             "cards_drawn_this_turn": cards_drawn_this_turn,
             "cumulative_cards_drawn": cumulative_cards_drawn,
-            "chance_of_drawing_at_least_1_deck1": round(p_at_least_1_deck1, 2),
-            "chance_of_drawing_at_least_1_deck2": round(p_at_least_1_deck2, 2),
-            "chance_of_drawing_at_least_1_deck3": round(p_at_least_1_deck3, 2),
-            "chance_of_drawing_at_least_1_deck4": round(p_at_least_1_deck4, 2),
-            "chance_of_drawing_at_least_1_deck5": round(p_at_least_1_deck5, 2),
-            "simulated_successes_drawn_this_turn_deck1": successes_drawn_this_turn_deck1,
-            "simulated_successes_drawn_this_turn_deck2": successes_drawn_this_turn_deck2,
-            "simulated_successes_drawn_this_turn_deck3": successes_drawn_this_turn_deck3,
-            "simulated_successes_drawn_this_turn_deck4": successes_drawn_this_turn_deck4,
-            "simulated_successes_drawn_this_turn_deck5": successes_drawn_this_turn_deck5,
-            "cumulative_successes_drawn_deck1": cumulative_successes_drawn_deck1,
-            "cumulative_successes_drawn_deck2": cumulative_successes_drawn_deck2,
-            "cumulative_successes_drawn_deck3": cumulative_successes_drawn_deck3,
-            "cumulative_successes_drawn_deck4": cumulative_successes_drawn_deck4,
-            "cumulative_successes_drawn_deck5": cumulative_successes_drawn_deck5,
-            "cumulative_success_as_percent_of_cumulative_cards_drawn_deck1":
-                round(cumulative_successes_drawn_deck1 / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2),
-            "cumulative_success_as_percent_of_cumulative_cards_drawn_deck2":
-                round(cumulative_successes_drawn_deck2 / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2),
-            "cumulative_success_as_percent_of_cumulative_cards_drawn_deck3":
-                round(cumulative_successes_drawn_deck3 / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2),
-            "cumulative_success_as_percent_of_cumulative_cards_drawn_deck4":
-                round(cumulative_successes_drawn_deck4 / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2),
-            "cumulative_success_as_percent_of_cumulative_cards_drawn_deck5":
-                round(cumulative_successes_drawn_deck5 / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2)
-        })
+        }
+
+        # expand per-deck stats into row
+        for i in range(num_decks):
+            row[f"num_successes_in_deck_turn_start_deck{i+1}"] = turn_start_successes[i]
+            row[f"chance_of_drawing_at_least_1_deck{i+1}"] = round(p_at_least_1[i], 2)
+            row[f"simulated_successes_drawn_this_turn_deck{i+1}"] = successes_this_turn[i]
+            row[f"cumulative_successes_drawn_deck{i+1}"] = cumulative_successes[i]
+            row[f"cumulative_success_as_percent_of_cumulative_cards_drawn_deck{i+1}"] = (
+                round(cumulative_successes[i] / cumulative_cards_drawn, 2)
+                if cumulative_cards_drawn > 0 else 0
+            )
+
+        rows.append(row)
 
     return pd.DataFrame(rows)
+
 
 
 # === Dash App ===
