@@ -54,13 +54,14 @@ class DeckMetrics:
         round_avg = round(avg, 2)
         return round_avg
 
-    def deck_draw_distribution(self):
-        # Calculate, ratio of draw_cards to total_deck, multiplied by average draw value
+    def deck_distributed_draw_value(self):
+        # for every 'd' cards, expect to draw one card_draw card
+        # for every 'x' cards, expect to draw one additional card
         d = self.deck_library_count()
         s = self.num_draw()
         v = self.avg_draw_value()
-        r = s / d
-        x = r * v
+        r = s / d  # ratio of draw cards to total deck
+        x = (s * v) / d  # distributed draw value
         return x
 
     def avg_card_score(self):

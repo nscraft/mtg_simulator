@@ -11,8 +11,9 @@ class ProbabilityReport:
         self.turn_number = 0
         self.deck_size = deck_metrics.deck_library_count()
         self.num_success_in_deck = deck_metrics.num_land()  # land card type based reporting
-        self.hit_bonus =  math.ceil(1 / deck_metrics.deck_draw_distribution())
         self.cumulative_cards_drawn = 0
+        self.hit_bonus_increment = deck_metrics.deck_distributed_draw_value()
+        self.cumulative_hit_bonus = 0
         self.cumulative_successes_drawn = 0
         self.columns = [
             'Turn_number',
@@ -42,10 +43,20 @@ class ProbabilityReport:
         for turn in range(1, self.MAX_TURNS):
             turn_start_deck_size = self.deck_size
             turn_start_num_successes = self.num_success_in_deck
+
+            # cards_drawn_this_turn
             if self.turn_number == 0:
+                # cards drawn turn 0 always 7
                 cards_drawn_this_turn = 7
             else:
-                cards_drawn_this_turn = 1 + math.ceil(self.cumulative_cards_drawn / self.hit_bonus)
+                # cards drawn each turn = base 1 + cumulative_hit_bonus (rounded down to whole card)
+                cards_drawn_this_turn = 1 + math.floor(self.cumulative_hit_bonus)
+
+            # after cumulative hit bonus is applied reset it
+            if self.cumulative_hit_bonus >= 1:
+                self.cumulative_hit_bonus = 0
+
+            # Reset for the turn
             successes_drawn_this_turn = 0
 
             # Calculate total draw probabilities
@@ -63,6 +74,7 @@ class ProbabilityReport:
                 hit_result = np.random.binomial(1, P_at_least_k)
                 self.deck_size -= 1
                 self.cumulative_cards_drawn += 1
+                self.cumulative_hit_bonus += self.hit_bonus_increment
                 if hit_result == 1:
                     self.num_success_in_deck -= 1
                     successes_drawn_this_turn += 1
