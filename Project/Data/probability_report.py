@@ -27,9 +27,9 @@ class ProbabilityReport:
         }
         self.columns = [
             'Turn_number',
-            'num_cards_in_deck',
-            'num_successes_in_deck',
-            'cards_drawn',
+            'num_cards_in_deck_turn_start',
+            'num_successes_in_deck_turn_start',
+            'cards_drawn_this_turn',
             'cumulative_cards_drawn',
             'chance_of_drawing_0',
             'chance_of_drawing_exactly_k',
@@ -37,7 +37,7 @@ class ProbabilityReport:
             'chance_of_drawing_more_than_k',
             'chance_of_drawing_at_least_k',
             'chance_of_drawing_less_than_k',
-            'successes_drawn',
+            'successes_drawn_this_turn',
             'cumulative_successes_drawn',
             'cumulative_success_as_percent_of_attempts',
         ]
@@ -51,6 +51,8 @@ class ProbabilityReport:
             pd.DataFrame: A DataFrame containing the probabilities for various conditions.
         """
         for turn in range(1, self.MAX_TURNS):
+            turn_start_deck_size = self.deck_size
+            turn_start_num_successes = self.num_success_in_deck
             cards_drawn_this_turn = self.cards_drawn_by_turn[f"turn_{self.turn_number}"]
             successes_drawn_this_turn = 0
 
@@ -79,20 +81,20 @@ class ProbabilityReport:
             # Record row
             new_row = {
                 'Turn_number': [self.turn_number],
-                'num_cards_in_deck': [self.deck_size],
-                'num_successes_in_deck': [self.num_success_in_deck],
-                'cards_drawn': [cards_drawn_this_turn],
+                'num_cards_in_deck_turn_start': [turn_start_deck_size],
+                'num_successes_in_deck_turn_start': [turn_start_num_successes],
+                'cards_drawn_this_turn': [cards_drawn_this_turn],
                 'cumulative_cards_drawn': [self.cumulative_cards_drawn],
-                'chance_of_drawing_0': [P_at_0],
-                'chance_of_drawing_exactly_k': [P_at_exactly_k],
-                'chance_of_drawing_at_most_k': [P_at_most_k],
-                'chance_of_drawing_more_than_k': [P_more_than_k],
-                'chance_of_drawing_at_least_k': [P_at_least_k],
-                'chance_of_drawing_less_than_k': [P_less_than_k],
-                'successes_drawn': [successes_drawn_this_turn],
+                'chance_of_drawing_0': [round(P_at_0, 2)],
+                'chance_of_drawing_exactly_k': [round(P_at_exactly_k, 2)],
+                'chance_of_drawing_at_most_k': [round(P_at_most_k, 2)],
+                'chance_of_drawing_more_than_k': [round(P_more_than_k, 2)],
+                'chance_of_drawing_at_least_k': [round(P_at_least_k, 2)],
+                'chance_of_drawing_less_than_k': [round(P_less_than_k, 2)],
+                'successes_drawn_this_turn': [successes_drawn_this_turn],
                 'cumulative_successes_drawn': [self.cumulative_successes_drawn],
                 'cumulative_success_as_percent_of_attempts': [
-                    self.cumulative_successes_drawn / self.cumulative_cards_drawn if self.cumulative_cards_drawn > 0 else 0
+                    round(self.cumulative_successes_drawn / self.cumulative_cards_drawn if self.cumulative_cards_drawn > 0 else 0, 2)
                 ]
             }
             self.dataframe = pd.concat([self.dataframe, pd.DataFrame(new_row)], ignore_index=True)
