@@ -1,6 +1,7 @@
 import pandas as pd
 import Project.Analytics.probability_engine
 import numpy as np
+import math
 
 class ProbabilityReport:
     MAX_TURNS = 12  # inclusive of turn 0 - 10
@@ -10,21 +11,9 @@ class ProbabilityReport:
         self.turn_number = 0
         self.deck_size = deck_metrics.deck_library_count()
         self.num_success_in_deck = deck_metrics.num_land()  # land card type based reporting
+        self.hit_bonus =  math.ceil(1 / deck_metrics.deck_draw_distribution())
         self.cumulative_cards_drawn = 0
         self.cumulative_successes_drawn = 0
-        self.cards_drawn_by_turn = {
-            "turn_0": 7,  # Number of cards drawn on turn 0
-            "turn_1": 1,
-            "turn_2": 1,
-            "turn_3": 1,
-            "turn_4": 1,
-            "turn_5": 1,
-            "turn_6": 1,
-            "turn_7": 1,
-            "turn_8": 1,
-            "turn_9": 1,
-            "turn_10": 1,
-        }
         self.columns = [
             'Turn_number',
             'num_cards_in_deck_turn_start',
@@ -53,7 +42,10 @@ class ProbabilityReport:
         for turn in range(1, self.MAX_TURNS):
             turn_start_deck_size = self.deck_size
             turn_start_num_successes = self.num_success_in_deck
-            cards_drawn_this_turn = self.cards_drawn_by_turn[f"turn_{self.turn_number}"]
+            if self.turn_number == 0:
+                cards_drawn_this_turn = 7
+            else:
+                cards_drawn_this_turn = 1 + math.ceil(self.cumulative_cards_drawn / self.hit_bonus)
             successes_drawn_this_turn = 0
 
             # Calculate total draw probabilities
