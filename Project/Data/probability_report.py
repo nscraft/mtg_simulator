@@ -101,8 +101,6 @@ class ProbabilityReport:
                 ]
             }
             self.dataframe = pd.concat([self.dataframe, pd.DataFrame(new_row)], ignore_index=True)
-            # Update for next turn
-            self.turn_number += 1
 
         self.dataframe = self.dataframe.sort_values(by='turn_number').reset_index(drop=True)
         return self.dataframe

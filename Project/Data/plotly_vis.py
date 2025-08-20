@@ -23,16 +23,13 @@ def generate_table_data(deck_size: int, num_success_in_deck: int, bonus_draws) -
             # 1 plus slider value for bonus draws
             cards_drawn_this_turn = 1 + bonus_draws.get(f"bonus-turn-{turn_number}", 0)
 
-        cumulative_cards_drawn += cards_drawn_this_turn
-
         # probability of drawing at least 1 success this turn
-        p_at_least_1 = P_at_least_k(turn_start_deck_size, turn_start_num_successes, cards_drawn_this_turn, 1)
+        p_at_least_1 = P_at_least_k(N=deck_size, K=num_success_in_deck, n=cards_drawn_this_turn, k=1)
 
         # Simulate drawing cards
         for _ in range(cards_drawn_this_turn):
-            p_at_least_1 = P_at_least_k(
-                N=deck_size, K=num_success_in_deck, n=1, k=1)
-            hit_result = np.random.binomial(1, P_at_least_k)
+            probability = P_at_least_k(N=deck_size, K=num_success_in_deck, n=1, k=1)
+            hit_result = np.random.binomial(1, probability)
             deck_size -= 1
             cumulative_cards_drawn += 1
             if hit_result == 1:
@@ -55,9 +52,6 @@ def generate_table_data(deck_size: int, num_success_in_deck: int, bonus_draws) -
                 round(cumulative_successes_drawn / cumulative_cards_drawn if cumulative_cards_drawn > 0 else 0, 2)
         })
 
-        # update deck for next turn
-        turn_number += 1
-
     return pd.DataFrame(rows)
 
 
@@ -75,8 +69,8 @@ app.layout = html.Div([
         dcc.Slider(
             id="num-successes",
             min=0, max=99, step=1, value=40,
-            marks={i: str(i) for i in range(0, 101, 20)},
-            tooltip={"placement": "bottom", "always_visible": True}
+            marks={i: str(i) for i in range(0, 101, 10)},
+            tooltip={"placement": "right", "always_visible": True}
         ),
     ], style={"width": "70%", "margin": "20px"}),
 
@@ -93,7 +87,7 @@ app.layout = html.Div([
             for i in range(1, 11)
         ],
         style={"display": "flex", "justifyContent": "space-around",
-               "alignItems": "flex-end", "height": "300px", "marginBottom": "30px"}
+               "alignItems": "flex-end", "height": "200px", "marginBottom": "30px"}
     ),
 
     dash_table.DataTable(
@@ -123,7 +117,8 @@ app.layout = html.Div([
     [Input(f"bonus-turn-{i}", "value") for i in range(1, 11)]
 )
 def update_table(deck_size, num_successes, *bonus_draws):
-    df = generate_table_data(deck_size, num_successes, bonus_draws)
+    bonus_dict = {f"bonus-turn-{i+1}": val for i, val in enumerate(bonus_draws)}
+    df = generate_table_data(deck_size, num_successes, bonus_dict)
     return df.to_dict("records")
 
 
