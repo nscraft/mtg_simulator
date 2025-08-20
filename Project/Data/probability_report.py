@@ -21,12 +21,12 @@ class ProbabilityReport:
             'num_successes_in_deck_turn_start',
             'cards_drawn_this_turn',
             'cumulative_cards_drawn',
-            'chance_of_drawing_0',
-            'chance_of_drawing_exactly_k',
-            'chance_of_drawing_at_most_k',
-            'chance_of_drawing_more_than_k',
+            # 'chance_of_drawing_0',
+            # 'chance_of_drawing_exactly_k',
+            # 'chance_of_drawing_at_most_k',
+            # 'chance_of_drawing_more_than_k',
             'chance_of_drawing_at_least_k',
-            'chance_of_drawing_less_than_k',
+            # 'chance_of_drawing_less_than_k',
             'successes_drawn_this_turn',
             'cumulative_successes_drawn',
             'cumulative_success_as_percent_of_attempts',
@@ -49,8 +49,8 @@ class ProbabilityReport:
                 # cards drawn turn 0 always 7
                 cards_drawn_this_turn = 7
             else:
-                # cards drawn each turn = base 1 + cumulative_hit_bonus (rounded down to whole card)
-                cards_drawn_this_turn = 1 + math.floor(self.cumulative_hit_bonus)
+                # cards_drawn_this_turn = 1 + math.floor(self.cumulative_hit_bonus)
+                cards_drawn_this_turn = 1  #todo: cumulative_hit_bonus too front loaded
 
             # after cumulative hit bonus is applied reset it
             if self.cumulative_hit_bonus >= 1:
@@ -89,12 +89,12 @@ class ProbabilityReport:
                 'num_successes_in_deck_turn_start': [turn_start_num_successes],
                 'cards_drawn_this_turn': [cards_drawn_this_turn],
                 'cumulative_cards_drawn': [self.cumulative_cards_drawn],
-                'chance_of_drawing_0': [round(P_at_0, 2)],
-                'chance_of_drawing_exactly_k': [round(P_at_exactly_k, 2)],
-                'chance_of_drawing_at_most_k': [round(P_at_most_k, 2)],
-                'chance_of_drawing_more_than_k': [round(P_more_than_k, 2)],
+                # 'chance_of_drawing_0': [round(P_at_0, 2)],
+                # 'chance_of_drawing_exactly_k': [round(P_at_exactly_k, 2)],
+                # 'chance_of_drawing_at_most_k': [round(P_at_most_k, 2)],
+                # 'chance_of_drawing_more_than_k': [round(P_more_than_k, 2)],
                 'chance_of_drawing_at_least_k': [round(P_at_least_k, 2)],
-                'chance_of_drawing_less_than_k': [round(P_less_than_k, 2)],
+                # 'chance_of_drawing_less_than_k': [round(P_less_than_k, 2)],
                 'successes_drawn_this_turn': [successes_drawn_this_turn],
                 'cumulative_successes_drawn': [self.cumulative_successes_drawn],
                 'cumulative_success_as_percent_of_attempts': [
