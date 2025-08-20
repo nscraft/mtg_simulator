@@ -1,10 +1,9 @@
 import pandas as pd
 import Project.Analytics.probability_engine
 import numpy as np
-import math
 
 class ProbabilityReport:
-    MAX_TURNS = 12  # inclusive of turn 0 - 10
+    MAX_TURNS = 11  # inclusive of turn 0 - 10
 
     def __init__(self, deck_metrics):
         self.deck_metrics = deck_metrics
@@ -40,7 +39,7 @@ class ProbabilityReport:
         Returns:
             pd.DataFrame: A DataFrame containing the probabilities for various conditions.
         """
-        for turn in range(1, self.MAX_TURNS):
+        for turn in range(0, self.MAX_TURNS):
             turn_start_deck_size = self.deck_size
             turn_start_num_successes = self.num_success_in_deck
 
