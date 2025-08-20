@@ -1,7 +1,7 @@
-from Project.Data.probability_report import probability_report
+from Project.Data.probability_report import ProbabilityReport
 
 def deck_reporter(deck_name, deck_metrics, opening_hand_probs):
-    report_result = probability_report(deck_metrics=deck_metrics)
+    report_result = ProbabilityReport(deck_metrics=deck_metrics).generate_report()
     # save probability report to csv
     report_result.to_csv('probability_report.csv', index=False)
 
